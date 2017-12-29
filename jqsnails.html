@@ -1,0 +1,102 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+    tr td{
+        border-style:solid;
+    }
+</style>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+	function Array2DVar(x,y) {  // 定義二維陣列原型
+  		this.length = x;
+  		this.x = x;  // x 維度長度
+  		this.y = y;  // y 維度長度
+  		for(var i = 0; i < this.length; i++)  // 初始各元素值為 null
+  		this[i] = new Array();  // this 代表物件本身
+	}
+	$(document).ready(function () {
+		$('.btn1').click(function () {
+			var n = $('.row').val(), m = $('.col').val() , direction = $('.direction').val();
+			var count = 1, x = 0 , y = 0 , dx = 1 , dy = 0;
+			var num = new Array2DVar(n,m);
+			for (var i=0; i < n ;i++) {
+				for (var j=0; j < m ;j++) {
+					num[i][j] = 0; 
+				}
+			}
+			var td = "", tr = "", table = "";
+
+
+			while(count <= n*m ) {
+				num[x][y] = count;
+  				x += dx;
+  				y += dy;
+  				if (dx == 1 && (x >= n-1 || num[x+1][y] != 0 )) {
+  				  dx = 0;
+  				  dy = 1;
+  				}
+  				else if(dy == 1 && (y >= m-1 || num[x][y+1] != 0)){
+  				  dx = -1;
+  				  dy = 0;
+  				}
+  				else if(dx == -1 && (x <= 0 || num[x-1][y] != 0)){
+  				  dx = 0;
+  				  dy = -1;
+  				}
+  				else if(dy == -1 && (y <= 0 || num[x][y-1] != 0)){
+  				  dx = 1;
+  				  dy = 0;
+  				}
+  				count++;
+			}
+
+			if(direction==0){
+				for (var i=0; i < m ;i++) {
+					for (var j=0; j < n ;j++) {
+						td += '<td>' + num[j][i] + '</td>';
+					}
+					tr += '<tr>' + td + '</tr>';
+					td = "";
+				}
+			}else{
+				for (var i=0; i < n ;i++) {
+					for (var j=0; j < m ;j++) {
+						td += '<td>' + num[i][j] + '</td>';
+					}
+					tr += '<tr>' + td + '</tr>';
+					td = "";
+				}
+			}
+			
+
+			table = '<table>' + tr + '</table>';
+			tr = "";
+			$('.test').html(table);
+
+		})
+	})
+	
+
+</script>
+
+  
+</head>
+<body>
+<table>
+        <p>行: <input class="row" type="text" name="row" pattern="^[0-9]*$" required="required"/></p>
+        <p>列: <input class="col" type="text" name="col" pattern="^[0-9]*$" required="required"/></p>
+        <p>方向:<select class="direction" name="direction"><option value ="0">逆時針</option><option value ="1">順時針</option></select></p>
+        <input class="btn1" type="submit" value="Submit" />
+</table>
+
+      <div class="test"></div>
+
+    
+</body>
+</html>
