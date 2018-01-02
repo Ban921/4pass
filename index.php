@@ -40,7 +40,7 @@
 
 <body>
 	<div class="gametable">  
-		<div class="start">發牌</div>
+		<div class="start">開始</div>
 		<div class="up"></div>
 		<div class="right"></div>
 		<div class="left"></div>
