@@ -53,7 +53,7 @@
     <div class="check">比牌</div>
     <div class="raise">加碼</div>
     <div class="call">過/跟牌</div>
-		<div class="flod">棄牌</div>
+    <div class="flod">棄牌</div>
 
 		<!-- <div class="back">取消</div> -->
 	</div>
