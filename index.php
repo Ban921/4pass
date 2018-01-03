@@ -39,18 +39,27 @@
 </head>
 
 <body>
+  <div class="heard">
+    <div class="money">1000</div>
+  </div>
+  
 	<div class="gametable">  
+
 		<div class="start">開始</div>
 		<div class="up"></div>
 		<div class="right"></div>
 		<div class="left"></div>
 		<div class="down"></div>
-		<div class="go">比牌</div>
+    <div class="check">比牌</div>
+    <div class="raise">加碼</div>
+    <div class="call">過/跟牌</div>
+		<div class="flod">棄牌</div>
+
 		<!-- <div class="back">取消</div> -->
 	</div>
 
 
-	<div class="num"></div>
+	
 	<script src="js/main.js?version=<?php echo rand()?>"></script>
 	<link rel="stylesheet" type="text/css" href="css/style.css?version=<?php echo rand()?>">
 </body>

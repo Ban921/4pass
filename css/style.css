@@ -2,55 +2,50 @@ body{
 	cursor: pointer;
 	overflow:hidden;
 	background-image: url('../img/diceGameBg.png');
-    background-size: cover;
-    background-repeat: no-repeat;
+	background-size: cover;
+	background-repeat: no-repeat;
 }
 .gametable{
 	width: 1430px;
-    height: 630px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    margin: auto;
-    background-image: url(../img/desktop.png);
-    background-repeat: no-repeat;
+	height: 630px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	margin: auto;
+	background-image: url(../img/desktop.png);
+	background-repeat: no-repeat;
 }
 
 .up{
 	width: 200px;
 	height: 200px;
 	margin: 0px auto;
-	border-style:dashed;
-
+	/*border-style:dashed;*/
 }
 .down{
 	width: 200px;
 	height: 200px;
 	margin:auto;
-	border-style:dashed;
-
 
 }
 .right{
 	width: 200px;
 	height: 200px;
 	float: right;
-	border-style:dashed;
 	
 }
 .left{
 	width: 200px;
 	height: 200px;
 	margin: auto 0px;
-	border-style:dashed;
+
 }
-.start{
+
+.start, .check, .raise, .call, .flod{
 	color: rgba(255,255,255,1);
-	text-decoration: none;
 	background-color: rgba(219,87,5,1);
-	font-family: 'Yanone Kaffeesatz';
 	font-weight: 700;
 	font-size: 3em;
 	display: block;
@@ -62,13 +57,21 @@ body{
 	-moz-box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
 	box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
 	text-align: center;
-
 	-webkit-transition: all .1s ease;
 	-moz-transition: all .1s ease;
 	-ms-transition: all .1s ease;
 	-o-transition: all .1s ease;
 	transition: all .1s ease;
+}
 
+.start:active, .check:active{
+	-webkit-box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
+	-moz-box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
+	box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
+	position: relative;
+}
+
+.start{
 	width: 100px;
 	height: 50px;
 	position:relative;
@@ -77,51 +80,51 @@ body{
 	float: left;
 }
 .start:active{
-	-webkit-box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
-	-moz-box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
-	box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
-	position: relative;
 	top: 275px;
 	left: 660px;
 }
-.go{
-	color: rgba(255,255,255,1);
-	text-decoration: none;
-	background-color: rgba(219,87,5,1);
-	font-family: 'Yanone Kaffeesatz';
-	font-weight: 700;
-	font-size: 3em;
-	display: block;
-	padding: 4px;
-	-webkit-border-radius: 8px;
-	-moz-border-radius: 8px;
-	border-radius: 8px;
-	-webkit-box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
-	-moz-box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
-	box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
-	text-align: center;
-	-webkit-transition: all .1s ease;
-	-moz-transition: all .1s ease;
-	-ms-transition: all .1s ease;
-	-o-transition: all .1s ease;
-	transition: all .1s ease;
-
+.check{
 	width: 100px;
 	height: 50px;
 	position:relative;
 	right:  30px;
 	bottom: 100px;
-	/*left: 400px;*/
 	float: right;
+	display:none;
 }
-.go:active{
-	-webkit-box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
-	-moz-box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
-	box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
-	position: relative;
-
+.check:active{
 	bottom: 100px;
 }
+
+.raise, .call, .flod{
+	margin-left: 10px;
+	display:none;
+}
+
+.raise{
+	width: 100px;
+	height: 50px;
+	position:relative;
+	float: left;
+	bottom: 100px;
+}
+
+.call{
+	width: 170px;
+	height: 50px;
+	position:relative;
+	float: left;
+	bottom: 100px;
+}
+
+.flod{
+	width: 100px;
+	height: 50px;
+	position:relative;
+	float: left;
+	bottom: 100px;
+}
+
 img{
 	height: 100px;
 	width: 100px;
@@ -130,42 +133,15 @@ img{
 img:hover{
 	top:10px;
 }
-.chack{
-	background-color: #E0E0E0;
-}
-.back{
-	color: rgba(255,255,255,1);
-	text-decoration: none;
-	background-color: rgba(219,87,5,1);
-	font-family: 'Yanone Kaffeesatz';
-	font-weight: 700;
-	font-size: 3em;
-	display: block;
-	padding: 4px;
-	-webkit-border-radius: 8px;
-	-moz-border-radius: 8px;
-	border-radius: 8px;
-	-webkit-box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
-	-moz-box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
-	box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
-	text-align: center;
-	-webkit-transition: all .1s ease;
-	-moz-transition: all .1s ease;
-	-ms-transition: all .1s ease;
-	-o-transition: all .1s ease;
-	transition: all .1s ease;
 
-	width: 100px;
-	height: 50px;
-	position:relative;
-	left: 50px;
-	bottom: 100px;
-	float: left;
+.money{
+	width: 250px;
+	height: 105px;
+	background-image: url(../img/money.png);
+	background-repeat: no-repeat;
+	float: right;
+	font-size: 100px;
+	text-align: center;
 }
-.back:active{
-	-webkit-box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
-	-moz-box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
-	box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
-	position: relative;
-	bottom: 100px;
-}
+
+
