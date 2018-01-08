@@ -18,29 +18,57 @@ body{
 	background-repeat: no-repeat;
 }
 
-.up{
+.user0{
 	width: 200px;
 	height: 200px;
-	margin: 0px auto;
-	/*border-style:dashed;*/
+	left:300px;
+	position:absolute;
 }
-.down{
+.user1{
 	width: 200px;
 	height: 200px;
-	margin:auto;
-
+	left:600px;
+	position:absolute;
 }
-.right{
+.user2{
 	width: 200px;
 	height: 200px;
-	float: right;
-	
+	left:900px;
+	position:absolute;
 }
-.left{
+.user3{
 	width: 200px;
 	height: 200px;
-	margin: auto 0px;
-
+	top:200px;
+	position:absolute;
+}
+.user4{
+	width: 200px;
+	height: 200px;
+	top:200px;
+	right: 0px;
+	position:absolute;
+}
+.user5{
+	width: 200px;
+	height: 200px;
+	left:300px;
+	top: 400px;
+	position:absolute;
+}
+.user6{
+	width: 200px;
+	height: 200px;
+	left:900px;
+	top: 400px;
+	position:absolute;
+}
+.user7{
+	width: 200px;
+	height: 200px;
+	left:600px;
+	top: 400px;
+	position:absolute;
 }
 
 .start, .check, .raise, .call, .flod{
@@ -74,10 +102,11 @@ body{
 .start{
 	width: 100px;
 	height: 50px;
-	position:relative;
+	position:absolute;
 	top: 275px;
 	left: 660px;
 	float: left;
+	z-index: 11;
 }
 .start:active{
 	top: 275px;
@@ -86,14 +115,15 @@ body{
 .check{
 	width: 100px;
 	height: 50px;
-	position:relative;
-	right:  30px;
+	position:absolute;
+	right:  500px;
 	bottom: 100px;
-	float: right;
 	display:none;
 }
 .check:active{
 	bottom: 100px;
+	position:absolute;
+	right:  500px;
 }
 
 .raise, .call, .flod{
@@ -104,25 +134,27 @@ body{
 .raise{
 	width: 100px;
 	height: 50px;
-	position:relative;
-	float: left;
+	position:absolute;
 	bottom: 100px;
+	left: 350px;
 }
 
 .call{
 	width: 170px;
 	height: 50px;
-	position:relative;
+	position:absolute;
 	float: left;
 	bottom: 100px;
+	left: 350px;
 }
 
 .flod{
 	width: 100px;
 	height: 50px;
-	position:relative;
+	position:absolute;
 	float: left;
 	bottom: 100px;
+	left: 550px;
 }
 
 img{
@@ -144,4 +176,39 @@ img:hover{
 	text-align: center;
 }
 
+#body{
+	width: 100px;
+	position:absolute;
+	bottom: 20px;
+	right: 0;
+}
 
+#log{
+	max-width:400px;
+ 	max-height:100px;
+	min-width:400px;
+ 	min-height:100px;
+	width: 400px;
+    height: 100px;
+    position:absolute;
+	bottom: 20px;
+	right: 0;
+}
+#message{
+	width: 400px;
+	position:absolute;
+	bottom: 0;
+	right: 0;
+}
+
+.tablemoney{
+	width: 150px;
+	height: 75px;
+	position:absolute;
+	top: 250px;
+	left: 630px;
+	float: left;
+	z-index: 10;
+	display:none;
+	font-size: 100px;
+}

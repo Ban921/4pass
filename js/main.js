@@ -1,13 +1,15 @@
 var poker = new Array();
 var compare = new Array();
+var raisenum = 0, usernum = 0;
+var user = new Array();
 
-var up = true;
-var right = true;
-var left = true;
-var down = true;
+var id = Math.floor(8*Math.random());
+
+for (var i = 0; i < 8; i++) {
+	user[i] = true;
+}
 
 var tablemoney = 0;
-
 for (var i = 1; i <= 52; i++) {
 	poker[i] = i;
 }
@@ -22,15 +24,11 @@ function changnum(w,x,y,z){
 	if(chk4pass(w,x,y,z)){
 		a = 99; b = 99;
 	}else{
-
 		//13等於兩張
 		if(chkpass(w,x,y,z)){
-
 		}else{
-
 			//12等於兩張大於10
 			if(chklong(w,x,y,z)){
-
 			}else{
 				a = 0; b = 0;
 				if(w==10){w=0;} if(x==10){x=0;} if(y==10){y=0;} if(z==10){z=0;}
@@ -38,7 +36,6 @@ function changnum(w,x,y,z){
 				if(w>10){w=0.5;} if(x>10){x=0.5;} if(y>10){y=0.5;} if(z>10){z=0.5;}
 				if(a==''){a = w+x;} if(b==''){b = y+z;}
 				if(a>=10){a=a-10;} if(b>=10){b=b-10;}
-
 			}
 		}
 	}
@@ -76,22 +73,21 @@ function num2(y,z) {
 
 //四支刀
 function chk4pass(w,x,y,z) {
-	if(w==x && x==y && y==z){	return true;	}
+	if(w==x && x==y && y==z){return true;}
 	return false;
 }
 //兩張一樣
 function chkpass(w,x,y,z) {
-	if(w == x){	a = w+12;	}else{	a = num1(w,x);	}
-	if(y == z){	b = y+12;	}else{	b = num2(y,z);	}
-	if(a == w+12 || b == y+12){	return true;	}
+	if(w == x){	a = w+12;	}else{	if(chklong(w,x,y,z)){}else{ a = num1(w,x);} }
+	if(y == z){	b = y+12;	}else{	if(chklong(w,x,y,z)){}else{ b = num2(y,z);} }
+	if(a == w+12 || b == y+12){return true;}
 	return false;
 }
 //囉嗦
 function chklong(w,x,y,z) {
-	a = 0; b = 0; 
-	if(w > 10 && x > 10){	a = 12;	}else{	if(a == ''){a = num1(w,x);}	}
-	if(y > 10 && z > 10){	b = 12;	}else{	if(b == ''){b = num2(y,z);}	}
-	if(a == 12 || b == 12){	return true;	}
+	if(w > 10 && x > 10){ a = 12; }else{ if(a == ''){a = num1(w,x);} }
+	if(y > 10 && z > 10){ b = 12; }else{ if(b == ''){b = num2(y,z);} }
+	if(a == 12 || b == 12){ return true; }
 	return false;
 }
 
@@ -115,84 +111,137 @@ function calculate(w,x,y,z) {
 	}
 }
 
+function findArray(key, value, haystack, strict) {
+	for(var i = 0; i < haystack.length; i++) {
+	    if (typeof strict !== 'undefined' && strict === true) {
+	        if(haystack[i][key] === value) return haystack[i];
+	    } else {
+	        if(haystack[i][key] == value) return haystack[i];
+	    }
+	}
+	return false;
+}
+
 
 $('.start').click(function () {
+	raisenum = 0;
+	usernum = 0;
+	for (var i = 0; i < 8; i++) {
+		if(user[i]){ usernum++};
+	}
+
+	gamemoney = parseInt($(".money").html());
+	$(".money").html(gamemoney - 10);
+	tablemoney = tablemoney + (10*usernum);
+	$('.tablemoney').html(tablemoney);
 	poker.sort(function(){return Math.random()>0.5?-1:1;});
 
-	if(up){
-		$('.up').css("border-style","dashed");
-		$('.up').html('<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />');
-	}
-	if(right){
-		$('.right').css("border-style","dashed");
-		$('.right').html('<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />');
-	}
-	if(left){
-		$('.left').css("border-style","dashed");
-		$('.left').html('<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />');
-	}
-	if(down){
-		$('.down').css("border-style","dashed");
-		$('.down').html('<img data="'+poker[12]+'" src="img/'+poker[12]+'.svg" />'+'<img data="'+poker[13]+'" src="img/'+poker[13]+'.svg" />'+'<img data="'+poker[14]+'" src="img/'+poker[14]+'.svg" />'+'<img data="'+poker[15]+'" src="img/'+poker[15]+'.svg" />');
+	for (var i = 0; i < user.length; i++) {
+		if (user[i]) {
+			$('.user'+i).css("border-style","dashed");
+			$('.user'+i).html('<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />');
+			if(i == id){
+				$('.user'+id).css("border-style","dashed");
+				$('.user'+id).html('<img data="'+poker[0+(id*4)]+'" src="img/'+poker[0+(id*4)]+'.svg" />'+'<img data="'+poker[1+(id*4)]+'" src="img/'+poker[1+(i*4)]+'.svg" />'+'<img data="'+poker[2+(i*4)]+'" src="img/'+poker[2+(i*4)]+'.svg" />'+'<img data="'+poker[3+(i*4)]+'" src="img/'+poker[3+(i*4)]+'.svg" />');
+			}
+		}else{
+			$('.user'+i).empty();
+			$('.user'+i).css("border-style","");
+		}
 	}
 	
-	$(function() {
-	  $( ".down" ).sortable();
-	  $( "bady" ).disableSelection();
-	});
 	$('.start').hide();
-	$('.check').show();
-	$('.raise').show();
-	$('.call').show();
-	$('.flod').show();
+	$('.check,.raise,.call,.flod,.tablemoney').show();
 });
 
+$(function() {
+  $( '.user'+ id ).sortable();
+  $( "bady" ).disableSelection();
+});
 
 $('.check').click(function (){
-	var up = [];
-	var down = [];
-	
-
-	w = parseInt($(".down").find("img").eq(0).attr('data'));
-	x = parseInt($(".down").find("img").eq(1).attr('data'));
-	y = parseInt($(".down").find("img").eq(2).attr('data'));
-	z = parseInt($(".down").find("img").eq(3).attr('data'));
+	var upnum = [];
+	var downunm = [];
+	var usernum = 0;
+	w = parseInt($('.user' + id).find("img").eq(0).attr('data'));
+	x = parseInt($('.user' + id).find("img").eq(1).attr('data'));
+	y = parseInt($('.user' + id).find("img").eq(2).attr('data'));
+	z = parseInt($('.user' + id).find("img").eq(3).attr('data'));
 		if(changnum(w,x,y,z)){
 
-			$('.raise').hide();
-			$('.call').hide();
-			$('.flod').hide();
+			$('.raise,.call,.flod,.check').hide();
 
-			up.push({ name: "down", up: a, down: b });
-			down.push({ name: "down", up: a, down: b });
-			calculate(poker[0],poker[1],poker[2],poker[3]);
-			up.push({ name: "up", up: a, down: b });
-			down.push({ name: "up", up: a, down: b });
-			$('.up').html('<img src="img/'+pokered[0]+'.svg" />'+'<img src="img/'+pokered[1]+'.svg" />'+'<img src="img/'+pokered[2]+'.svg" />'+'<img src="img/'+pokered[3]+'.svg" />');
-			calculate(poker[4],poker[5],poker[6],poker[7]);
-			up.push({ name: "right", up: a, down: b });
-			down.push({ name: "right", up: a, down: b });
-			$('.right').html('<img src="img/'+pokered[0]+'.svg" />'+'<img src="img/'+pokered[1]+'.svg" />'+'<img src="img/'+pokered[2]+'.svg" />'+'<img src="img/'+pokered[3]+'.svg" />');
-			calculate(poker[8],poker[9],poker[10],poker[11]);
-			up.push({ name: "left", up: a, down: b });
-			down.push({ name: "left", up: a, down: b });
-			$('.left').html('<img src="img/'+pokered[0]+'.svg" />'+'<img src="img/'+pokered[1]+'.svg" />'+'<img src="img/'+pokered[2]+'.svg" />'+'<img src="img/'+pokered[3]+'.svg" />');
-			$('.check').hide();
-
-			up.sort(function (a, b) { return a.up < b.up ? 1 : -1;});
-			down.sort(function (a, b) { return a.down < b.down ? 1 : -1;});
-
-			if(up[0].name == down[0].name){
-				
-				console.log("123");
-			}else{
-				
-				console.log("321");
+			for (var i = 0; i < 8; i++) {
+				if(user[i]){ if(i != id){usernum++} };
 			}
-			// setTimeout(function(){
-			// 	$('.start').click();
-			// },5000);
+
+			tablemoney = parseInt($(".tablemoney").html());
+			tablemoney = tablemoney+(raisenum*10*usernum);
+			$('.tablemoney').html(tablemoney);
+
+			upnum.push({ name: 'user' + id, up: a, down: b });
+			downunm.push({ name: 'user' + id, up: a, down: b });
+
+			for (var i = 0; i < user.length; i++) {
+				if(user[i]){
+					if(i != id){
+						calculate(poker[0+(i*4)],poker[1+(i*4)],poker[2+(i*4)],poker[3+(i*4)]);
+						upnum.push({ name: 'user'+i, up: a, down: b });
+						downunm.push({ name: 'user'+i, up: a, down: b });
+						$('.user'+i).html('<img src="img/'+pokered[0]+'.svg" />'+'<img src="img/'+pokered[1]+'.svg" />'+'<img src="img/'+pokered[2]+'.svg" />'+'<img src="img/'+pokered[3]+'.svg" />');
+					}
+				}				
+			}
+			
+
+			upnum.sort(function (a, b) { return a.up < b.up ? 1 : -1;});
+			downunm.sort(function (a, b) { return a.down < b.down ? 1 : -1;});
+			console.log(upnum,downunm);
+
+			if(upnum[1].up<upnum[0].up && downunm[1].down<downunm[0].down){
+
+				if(upnum[0].name.charAt(4) == id){
+					gamemoney = parseInt($(".money").html());
+					$(".money").html(gamemoney + tablemoney);
+				}
+
+				tablemoney = 0;
+				for (var i = 0; i < 8; i++) {
+					user[i] = true;
+				}
+			}else{
+				for (var i = 1; i < usernum; i++) {
+					if(upnum[upnum.length-i].name == downunm[downunm.length-i].name){
+						user[upnum[downunm.length-i].name.charAt(4)] = false;
+
+					}
+					console.log(i);
+				}				
+			}
+			
+			setTimeout(function(){
+				$('.start').click();
+			},10000);
 		}else{
 			alert("前墩不能大於後墩");
 		}
 });
+
+$('.flod').click(function (){
+	tablemoney = 0;
+	$('.tablemoney').html(tablemoney);
+	setTimeout(function(){
+		$('.start').click();
+	},500);
+});	
+
+
+$('.raise').click(function (){
+	gamemoney = parseInt($(".money").html());
+	raisenum++;
+	$(".money").html(gamemoney - 10);
+	tablemoney = tablemoney+10;
+	$('.tablemoney').html(tablemoney);
+});
+
+
