@@ -1,76 +1,72 @@
 <?php
-// prevent the server from timing out
-set_time_limit(0);
+require_once __DIR__ . '/Workerman/Autoloader.php';
+use Workerman\Worker;
 
-// include the web sockets server script (the server is started at the far bottom of this file)
-require 'class.PHPWebSocket.php';
+$global_uid = [0,1,2,3,4,5,6,7];
+$online = [];
 
-// when a client sends data to the server
-function wsOnMessage($clientID, $message, $messageLength, $binary) {
-	global $Server;
-	$ip = long2ip( $Server->wsClients[$clientID][6] );
-
-	// check if message length is 0
-	if ($messageLength == 0) {
-		$Server->wsClose($clientID);
-		return;
-	}
-
-	//The speaker is the only person in the room. Don't let them feel lonely.
-	if ( sizeof($Server->wsClients) == 1 )
-		$Server->wsSend($clientID, "沒有其他人在線上");
-	else
-		//Send the message to everyone but the person who said it
-		foreach ( $Server->wsClients as $id => $client )
-			if ( $id != $clientID )
-				$Server->wsSend($id, "\"$message\"");
-}
-
-// when a client connects
-function wsOnOpen($clientID)
+// 当客户端连上来时分配uid，并保存连接，并通知所有客户端
+function connection($connection)
 {
-	global $Server;
-	// $ip = long2ip( $Server->wsClients[$clientID][6] );
+    global $worker, $global_uid;
+    // 为这个连接分配一个uid
+    if(empty($global_uid)){
+    	$worker->onClose;
+    }else{
+    	$connection->uid = $global_uid[0];
+    	array_shift($global_uid);
+    	foreach($worker->connections as $conn)
+    	{
+        	$conn->send("{$connection->uid}號玩家進入遊戲廳");
+    	}
+    }
+    
+    print_r($global_uid);
 
-	// $Server->log( "$ip ($clientID) has connected." );
-
-	//Send a join notice to everyone but the person who joined
-	foreach ( $Server->wsClients as $id => $client )
-		if ( $id != $clientID )
-			$Server->wsSend($id, "玩家 $clientID 加入房間.");
 }
 
-// when a client closes or lost connection
-function wsOnClose($clientID, $status) {
-	global $Server;
-	// $ip = long2ip( $Server->wsClients[$clientID][6] );
+// 当客户端发送消息过来时，转发给所有人
+function message($connection, $data)
+{
+    global $worker;
+    $data = json_decode($data);
+    if ($data->type == 'ready') {
+    	$data->userid = $connection->uid;
+    	$data = json_encode($data);
+    }
 
-	// $Server->log( "$ip ($clientID) has disconnected." );
+    foreach($worker->connections as $conn)
+    	{
+    		if($connection->uid || $connection->uid == 0){
 
-	//Send a user left notice to everyone in the room
-	foreach ( $Server->wsClients as $id => $client )
-		$Server->wsSend($id, "玩家 $clientID 離開房間.");
+    			$conn->send($data);
+    		}
+    	}    
 }
 
-function gamestart($clientID) {
-	global $Server;
-	// $ip = long2ip( $Server->wsClients[$clientID][6] );
-
-	// $Server->log( "$ip ($clientID) has disconnected." );
-
-	//Send a user left notice to everyone in the room
-	foreach ( $Server->wsClients as $id => $client )
-		$Server->wsSend($id, "玩家 $clientID 已準備.");
+// 当客户端断开时，广播给所有客户端
+function close($connection)
+{
+    global $worker, $global_uid;
+    foreach($worker->connections as $conn)
+    {
+        $conn->send("玩家[{$connection->uid}] 離開");
+    }
+    if($connection->uid || $connection->uid == 0){
+    	array_push($global_uid,$connection->uid);
+    }
+    print_r($global_uid);
+    
 }
 
-// start the server
-$Server = new PHPWebSocket();
-$Server->bind('message', 'wsOnMessage');
-$Server->bind('open', 'wsOnOpen');
-$Server->bind('close', 'wsOnClose');
-$Server->bind('start', 'gamestart');
-// for other computers to connect, you will probably need to change this to your LAN IP or external IP,
-// alternatively use: gethostbyaddr(gethostbyname($_SERVER['SERVER_NAME']))
-$Server->wsStartServer('192.168.106.138', 9300);
+// 创建一个文本协议的Worker监听2347接口
+$worker = new Worker("websocket://192.168.106.138:9300");
 
-?>
+// 只启动1个进程，这样方便客户端之间传输数据
+$worker->count = 1;
+
+$worker->onConnect = 'connection';
+$worker->onMessage = 'message';
+$worker->onClose = 'close';
+
+Worker::runAll();

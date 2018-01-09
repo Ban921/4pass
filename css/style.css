@@ -212,3 +212,11 @@ img:hover{
 	display:none;
 	font-size: 100px;
 }
+
+.web{
+	position:absolute;
+	bottom: 100px;
+	width: 100px;
+	height: 50px;
+	background-color: green;
+}

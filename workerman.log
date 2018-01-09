@@ -1,0 +1,37 @@
+2018-01-09 05:50:07 Error: Call to a member function send() on null in C:\xampp\htdocs\game\4pass\server.php:24
+Stack trace:
+#0 [internal function]: message(Object(Workerman\Connection\TcpConnection), '{"type":"ready"...')
+#1 C:\xampp\htdocs\game\4pass\Workerman\Connection\TcpConnection.php(632): call_user_func('message', Object(Workerman\Connection\TcpConnection), '{"type":"ready"...')
+#2 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #18)
+#3 C:\xampp\htdocs\game\4pass\Workerman\Events\Select.php(286): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\game\4pass\Workerman\Worker.php(856): Workerman\Events\Select->loop()
+#5 C:\xampp\htdocs\game\4pass\Workerman\Worker.php(473): Workerman\Worker->run()
+#6 C:\xampp\htdocs\game\4pass\Workerman\Worker.php(382): Workerman\Worker::runAllWorkers()
+#7 C:\xampp\htdocs\game\4pass\server.php(51): Workerman\Worker::runAll()
+#8 {main}
+2018-01-09 07:51:04 Exception: You can't send(object) to client, you need to convert it to a string.  in C:\xampp\htdocs\game\4pass\Workerman\Protocols\Websocket.php:225
+Stack trace:
+#0 C:\xampp\htdocs\game\4pass\Workerman\Connection\TcpConnection.php(313): Workerman\Protocols\Websocket::encode(Object(stdClass), Object(Workerman\Connection\TcpConnection))
+#1 C:\xampp\htdocs\game\4pass\server.php(33): Workerman\Connection\TcpConnection->send(Object(stdClass))
+#2 [internal function]: message(Object(Workerman\Connection\TcpConnection), Object(stdClass))
+#3 C:\xampp\htdocs\game\4pass\Workerman\Connection\TcpConnection.php(632): call_user_func('message', Object(Workerman\Connection\TcpConnection), '{"type":"ready"...')
+#4 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #22)
+#5 C:\xampp\htdocs\game\4pass\Workerman\Events\Select.php(286): call_user_func_array(Array, Array)
+#6 C:\xampp\htdocs\game\4pass\Workerman\Worker.php(856): Workerman\Events\Select->loop()
+#7 C:\xampp\htdocs\game\4pass\Workerman\Worker.php(473): Workerman\Worker->run()
+#8 C:\xampp\htdocs\game\4pass\Workerman\Worker.php(382): Workerman\Worker::runAllWorkers()
+#9 C:\xampp\htdocs\game\4pass\server.php(62): Workerman\Worker::runAll()
+#10 {main}
+2018-01-09 07:52:36 Exception: You can't send(object) to client, you need to convert it to a string.  in C:\xampp\htdocs\game\4pass\Workerman\Protocols\Websocket.php:225
+Stack trace:
+#0 C:\xampp\htdocs\game\4pass\Workerman\Connection\TcpConnection.php(313): Workerman\Protocols\Websocket::encode(Object(stdClass), Object(Workerman\Connection\TcpConnection))
+#1 C:\xampp\htdocs\game\4pass\server.php(32): Workerman\Connection\TcpConnection->send(Object(stdClass))
+#2 [internal function]: message(Object(Workerman\Connection\TcpConnection), Object(stdClass))
+#3 C:\xampp\htdocs\game\4pass\Workerman\Connection\TcpConnection.php(632): call_user_func('message', Object(Workerman\Connection\TcpConnection), '{"type":"ready"...')
+#4 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #22)
+#5 C:\xampp\htdocs\game\4pass\Workerman\Events\Select.php(286): call_user_func_array(Array, Array)
+#6 C:\xampp\htdocs\game\4pass\Workerman\Worker.php(856): Workerman\Events\Select->loop()
+#7 C:\xampp\htdocs\game\4pass\Workerman\Worker.php(473): Workerman\Worker->run()
+#8 C:\xampp\htdocs\game\4pass\Workerman\Worker.php(382): Workerman\Worker::runAllWorkers()
+#9 C:\xampp\htdocs\game\4pass\server.php(61): Workerman\Worker::runAll()
+#10 {main}

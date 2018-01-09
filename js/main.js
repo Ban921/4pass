@@ -3,8 +3,6 @@ var compare = new Array();
 var raisenum = 0, usernum = 0;
 var user = new Array();
 
-var id = Math.floor(8*Math.random());
-
 for (var i = 0; i < 8; i++) {
 	user[i] = true;
 }
@@ -245,3 +243,17 @@ $('.raise').click(function (){
 });
 
 
+$('.web').click(function (){
+	websocket.send(JSON.stringify({
+		'type':"ready",
+		'name': name,
+	})); 
+});
+
+$('#message').keypress(function(e) {
+	if ( e.keyCode == 13 && this.value ) {
+		log( 'You: ' + this.value );
+		websocket.send( this.value );
+		$(this).val('');
+	}
+});
