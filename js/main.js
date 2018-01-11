@@ -1,11 +1,7 @@
 var poker = new Array();
 var compare = new Array();
 var raisenum = 0, usernum = 0;
-var user = new Array();
 
-for (var i = 0; i < 8; i++) {
-	user[i] = true;
-}
 
 var tablemoney = 0;
 for (var i = 1; i <= 52; i++) {
@@ -37,7 +33,6 @@ function changnum(w,x,y,z){
 			}
 		}
 	}
-
 	if(a>b){
 		return false;
 	}else{
@@ -122,19 +117,25 @@ function findArray(key, value, haystack, strict) {
 
 
 $('.start').click(function () {
+	websocket.send(JSON.stringify({
+		'action':"start",
+		'name': name,
+	})); 
+});
+
+$('.gitporker').click(function () {
 	raisenum = 0;
 	usernum = 0;
-	for (var i = 0; i < 8; i++) {
+	for (var i = 1; i < 9; i++) {
 		if(user[i]){ usernum++};
 	}
 
 	gamemoney = parseInt($(".money").html());
 	$(".money").html(gamemoney - 10);
-	tablemoney = tablemoney + (10*usernum);
-	$('.tablemoney').html(tablemoney);
+	
 	poker.sort(function(){return Math.random()>0.5?-1:1;});
 
-	for (var i = 0; i < user.length; i++) {
+	for (var i = 1; i < 9; i++) {
 		if (user[i]) {
 			$('.user'+i).css("border-style","dashed");
 			$('.user'+i).html('<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />');
@@ -152,11 +153,6 @@ $('.start').click(function () {
 	$('.check,.raise,.call,.flod,.tablemoney').show();
 });
 
-$(function() {
-  $( '.user'+ id ).sortable();
-  $( "bady" ).disableSelection();
-});
-
 $('.check').click(function (){
 	var upnum = [];
 	var downunm = [];
@@ -169,7 +165,7 @@ $('.check').click(function (){
 
 			$('.raise,.call,.flod,.check').hide();
 
-			for (var i = 0; i < 8; i++) {
+			for (var i = 1; i < 9; i++) {
 				if(user[i]){ if(i != id){usernum++} };
 			}
 
@@ -180,7 +176,7 @@ $('.check').click(function (){
 			upnum.push({ name: 'user' + id, up: a, down: b });
 			downunm.push({ name: 'user' + id, up: a, down: b });
 
-			for (var i = 0; i < user.length; i++) {
+			for (var i = 1; i < 9; i++) {
 				if(user[i]){
 					if(i != id){
 						calculate(poker[0+(i*4)],poker[1+(i*4)],poker[2+(i*4)],poker[3+(i*4)]);
@@ -188,13 +184,12 @@ $('.check').click(function (){
 						downunm.push({ name: 'user'+i, up: a, down: b });
 						$('.user'+i).html('<img src="img/'+pokered[0]+'.svg" />'+'<img src="img/'+pokered[1]+'.svg" />'+'<img src="img/'+pokered[2]+'.svg" />'+'<img src="img/'+pokered[3]+'.svg" />');
 					}
-				}				
+				}
 			}
 			
 
 			upnum.sort(function (a, b) { return a.up < b.up ? 1 : -1;});
 			downunm.sort(function (a, b) { return a.down < b.down ? 1 : -1;});
-			console.log(upnum,downunm);
 
 			if(upnum[1].up<upnum[0].up && downunm[1].down<downunm[0].down){
 
@@ -204,16 +199,11 @@ $('.check').click(function (){
 				}
 
 				tablemoney = 0;
-				for (var i = 0; i < 8; i++) {
-					user[i] = true;
-				}
 			}else{
-				for (var i = 1; i < usernum; i++) {
+				for (var i = 0; i < upnum.length; i++) {
 					if(upnum[upnum.length-i].name == downunm[downunm.length-i].name){
 						user[upnum[downunm.length-i].name.charAt(4)] = false;
-
 					}
-					console.log(i);
 				}				
 			}
 			
@@ -245,15 +235,25 @@ $('.raise').click(function (){
 
 $('.web').click(function (){
 	websocket.send(JSON.stringify({
-		'type':"ready",
+		'action':"ready",
 		'name': name,
-	})); 
+	}));
+	$('.web').hide();
 });
 
-$('#message').keypress(function(e) {
-	if ( e.keyCode == 13 && this.value ) {
-		log( 'You: ' + this.value );
-		websocket.send( this.value );
-		$(this).val('');
-	}
+$(function() {
+	$('#message').keypress(function(e) {
+		if ( e.keyCode == 13 && this.value ) {
+			//log( 'You: ' + this.value );
+			websocket.send(JSON.stringify({
+				'action':"masg",
+				'name': name,
+				'masg': this.value,
+				
+			})); 
+			$(this).val('');
+		}
+	});
 });
+
+

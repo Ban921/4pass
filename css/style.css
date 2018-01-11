@@ -18,52 +18,52 @@ body{
 	background-repeat: no-repeat;
 }
 
-.user0{
+.user1{
 	width: 200px;
 	height: 200px;
 	left:300px;
 	position:absolute;
 }
-.user1{
+.user2{
 	width: 200px;
 	height: 200px;
 	left:600px;
 	position:absolute;
 }
-.user2{
-	width: 200px;
-	height: 200px;
-	left:900px;
-	position:absolute;
-}
 .user3{
 	width: 200px;
 	height: 200px;
-	top:200px;
+	left:900px;
 	position:absolute;
 }
 .user4{
 	width: 200px;
 	height: 200px;
 	top:200px;
-	right: 0px;
 	position:absolute;
 }
 .user5{
+	width: 200px;
+	height: 200px;
+	top:200px;
+	right: 0px;
+	position:absolute;
+}
+.user6{
 	width: 200px;
 	height: 200px;
 	left:300px;
 	top: 400px;
 	position:absolute;
 }
-.user6{
+.user7{
 	width: 200px;
 	height: 200px;
 	left:900px;
 	top: 400px;
 	position:absolute;
 }
-.user7{
+.user8{
 	width: 200px;
 	height: 200px;
 	left:600px;
@@ -90,6 +90,7 @@ body{
 	-ms-transition: all .1s ease;
 	-o-transition: all .1s ease;
 	transition: all .1s ease;
+
 }
 
 .start:active, .check:active{
@@ -107,6 +108,7 @@ body{
 	left: 660px;
 	float: left;
 	z-index: 11;
+	display:none;
 }
 .start:active{
 	top: 275px;

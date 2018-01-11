@@ -27,6 +27,12 @@
 
 	<meta charset="UTF-8">
 	<title>四支刀</title>
+	<script type="text/javascript">
+		if(!name){
+			var name = prompt("請輸入遊戲名稱");
+		}
+		
+	</script>
 	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
   
 <script
@@ -45,7 +51,7 @@
 	<div class="gametable">  
 		<div class="tablemoney"></div>
 		<div class="start">開始</div>
-		<div class="user0"></div>
+		<div class="gitporker"></div>
 		<div class="user1"></div>
 		<div class="user2"></div>
 		<div class="user3"></div>
@@ -53,11 +59,12 @@
 		<div class="user5"></div>
 		<div class="user6"></div>
 		<div class="user7"></div>
+		<div class="user8"></div>
 	</div>
 	<div class="button">
 		<div class="check">比牌</div>
 		<div class="raise">加碼</div>
-		<!-- <div class="call">過/跟牌</div> -->
+		<div class="call">過/跟牌</div>
 		<div class="flod">棄牌</div>
 		<div class="web">連線</div>
 	</div>
