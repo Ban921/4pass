@@ -2,11 +2,7 @@ var poker = new Array();
 var compare = new Array();
 var raisenum = 0, usernum = 0;
 
-
 var tablemoney = 0;
-for (var i = 1; i <= 52; i++) {
-	poker[i] = i;
-}
 
 function changnum(w,x,y,z){
 	a = 0;
@@ -132,95 +128,73 @@ $('.gitporker').click(function () {
 
 	gamemoney = parseInt($(".money").html());
 	$(".money").html(gamemoney - 10);
-	
-	poker.sort(function(){return Math.random()>0.5?-1:1;});
 
-	for (var i = 1; i < 9; i++) {
-		if (user[i]) {
-			$('.user'+i).css("border-style","dashed");
-			$('.user'+i).html('<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />');
-			if(i == id){
-				$('.user'+id).css("border-style","dashed");
-				$('.user'+id).html('<img data="'+poker[0+(id*4)]+'" src="img/'+poker[0+(id*4)]+'.svg" />'+'<img data="'+poker[1+(id*4)]+'" src="img/'+poker[1+(i*4)]+'.svg" />'+'<img data="'+poker[2+(i*4)]+'" src="img/'+poker[2+(i*4)]+'.svg" />'+'<img data="'+poker[3+(i*4)]+'" src="img/'+poker[3+(i*4)]+'.svg" />');
-			}
-		}else{
-			$('.user'+i).empty();
-			$('.user'+i).css("border-style","");
-		}
-	}
-	
 	$('.start').hide();
-	$('.check,.raise,.call,.flod,.tablemoney').show();
+	$('.raise, .call, .flod, .tablemoney, .yes').show();
 });
 
-$('.check').click(function (){
-	var upnum = [];
-	var downunm = [];
-	var usernum = 0;
+$('.yes').click(function (){
 	w = parseInt($('.user' + id).find("img").eq(0).attr('data'));
 	x = parseInt($('.user' + id).find("img").eq(1).attr('data'));
 	y = parseInt($('.user' + id).find("img").eq(2).attr('data'));
 	z = parseInt($('.user' + id).find("img").eq(3).attr('data'));
-		if(changnum(w,x,y,z)){
 
-			$('.raise,.call,.flod,.check').hide();
+	if(changnum(w,x,y,z)){
+		$('.raise,.call,.flod,.check,.yes').hide();
+		
+		websocket.send(JSON.stringify({
+			'action':"yes",
+			'name': name,
+			'userid': id,
+			'upnum': a,
+			'downunm': b,
+			'w': w,
+			'x': x,
+			'y': y,
+			'z': z,
+		}));
+	}else{
+		alert("前墩不能大於後墩");
+	}
+});
 
-			for (var i = 1; i < 9; i++) {
-				if(user[i]){ if(i != id){usernum++} };
-			}
+$('.check').click(function (){
+	
+	var usernum = 0;
 
-			tablemoney = parseInt($(".tablemoney").html());
-			tablemoney = tablemoney+(raisenum*10*usernum);
-			$('.tablemoney').html(tablemoney);
+	for (var i = 1; i < 9; i++) {
+		if(user[i]){ if(i != id){usernum++} };
+	}
 
-			upnum.push({ name: 'user' + id, up: a, down: b });
-			downunm.push({ name: 'user' + id, up: a, down: b });
+	tablemoney = parseInt($(".tablemoney").html());
+	tablemoney = tablemoney+(raisenum*10*usernum);
+	$('.tablemoney').html(tablemoney);
 
-			for (var i = 1; i < 9; i++) {
-				if(user[i]){
-					if(i != id){
-						calculate(poker[0+(i*4)],poker[1+(i*4)],poker[2+(i*4)],poker[3+(i*4)]);
-						upnum.push({ name: 'user'+i, up: a, down: b });
-						downunm.push({ name: 'user'+i, up: a, down: b });
-						$('.user'+i).html('<img src="img/'+pokered[0]+'.svg" />'+'<img src="img/'+pokered[1]+'.svg" />'+'<img src="img/'+pokered[2]+'.svg" />'+'<img src="img/'+pokered[3]+'.svg" />');
-					}
-				}
-			}
-			
+	// for (var i = 1; i < 9; i++) {
+	// 	if(user[i]){
+	// 		if(i != id){
+	// 			calculate(poker[0+(i*4)],poker[1+(i*4)],poker[2+(i*4)],poker[3+(i*4)]);
+	// 			$('.user'+i).html('<img src="img/'+pokered[0]+'.svg" />'+'<img src="img/'+pokered[1]+'.svg" />'+'<img src="img/'+pokered[2]+'.svg" />'+'<img src="img/'+pokered[3]+'.svg" />');
+	// 		}
+	// 	}
+	// }
+	
+	
 
-			upnum.sort(function (a, b) { return a.up < b.up ? 1 : -1;});
-			downunm.sort(function (a, b) { return a.down < b.down ? 1 : -1;});
+	// upnum.sort(function (a, b) { return a.up < b.up ? 1 : -1;});
+	// downunm.sort(function (a, b) { return a.down < b.down ? 1 : -1;});
 
-			if(upnum[1].up<upnum[0].up && downunm[1].down<downunm[0].down){
-
-				if(upnum[0].name.charAt(4) == id){
-					gamemoney = parseInt($(".money").html());
-					$(".money").html(gamemoney + tablemoney);
-				}
-
-				tablemoney = 0;
-			}else{
-				for (var i = 0; i < upnum.length; i++) {
-					if(upnum[upnum.length-i].name == downunm[downunm.length-i].name){
-						user[upnum[downunm.length-i].name.charAt(4)] = false;
-					}
-				}				
-			}
-			
-			setTimeout(function(){
-				$('.start').click();
-			},10000);
-		}else{
-			alert("前墩不能大於後墩");
-		}
 });
 
 $('.flod').click(function (){
+	websocket.send(JSON.stringify({
+		'action':"flod",
+		'name': name,
+		'userid': id,
+				
+	}));
 	tablemoney = 0;
 	$('.tablemoney').html(tablemoney);
-	setTimeout(function(){
-		$('.start').click();
-	},500);
 });	
 
 

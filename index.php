@@ -63,10 +63,11 @@
 	</div>
 	<div class="button">
 		<div class="check">比牌</div>
-		<div class="raise">加碼</div>
-		<div class="call">過/跟牌</div>
+		<!-- <div class="raise">加碼</div> -->
+		<!-- <div class="call">過/跟牌</div> -->
+		<div class="yes">確定</div>
 		<div class="flod">棄牌</div>
-		<div class="web">連線</div>
+		<div class="web"></div>
 	</div>
 	
 	<script src="js/main.js?version=<?php echo rand()?>"></script>

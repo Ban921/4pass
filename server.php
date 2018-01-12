@@ -6,6 +6,8 @@ $global = 0;
 $global_uid = [1,2,3,4,5,6,7,8];
 $online = [];
 $tablemoney = 0;
+$yesnum = 0;
+$gameing = 0;
 
 for ($i = 1; $i <= 52; $i++) {
 	$poker[$i] = $i;
@@ -27,7 +29,7 @@ function connection($connection)
 // 当客户端发送消息过来时，转发给所有人
 function message($connection, $data)
 {
-    global $worker, $online, $poker, $tablemoney;
+    global $worker, $online, $poker, $tablemoney, $yesnum, $pokered, $gameing, $upnum, $downunm;
 
     $data = json_decode($data);
     $data->userid = $connection->uid;
@@ -35,29 +37,98 @@ function message($connection, $data)
 
     switch ($data->action) {
     	case 'ready':
-    		if (!in_array($connection->uid, $online)){
-				array_push($online,$connection->uid);
-			}
-    		$data->online = $online;
+    			if (!in_array($connection->uid, $online)){
+    				if($gameing == 0){
+    					array_push($online,$connection->uid);
+    				}
+				}
+    			$data->gameing = $gameing;
     		break;
     	case 'start':
+    			if (!in_array($connection->uid, $online)){
+    				array_push($online,$connection->uid);
+				}
 				shuffle($poker);
+				$data->poker = $poker;
+				$tablemoney = $tablemoney+count($online)*10;
+				$gameing = 1;
+				$yesnum = 0;
     		break;
     	case 'raise':
-    		
+    			
     		break;
     	case 'flod':
-    		
+    			$data->userid = $connection->uid;
+    			$data->action = "quit";
+    			$data->masg = "quit";
+    			foreach($online as $key => $value){
+    			  if($value == $connection->uid){
+    			     unset($online[$key]);
+    			  }
+    			}
+    			$online = array_values($online);
     		break;
     	case 'restart':
+    			$data->action = "restart";
     			$tablemoney = 0;
+    			$data->startnum = 1;
     		break;
+    	case 'yes':
+    			$data->action = "yes";
+    			$yesnum++;
+
+    			$pokered[0+$data->userid*4] = $data->w;
+    			$pokered[1+$data->userid*4] = $data->x;
+    			$pokered[2+$data->userid*4] = $data->y;
+    			$pokered[3+$data->userid*4] = $data->z;
+
+    			$upnum[$data->userid] = $data->upnum;
+    			$downunm[$data->userid] = $data->downunm;
+    			
+    			$data->pokered = $pokered;
+
+    			
+    			if(count($online) == $yesnum){
+    				sleep(1);
+    				arsort($upnum);
+    				arsort($downunm);
+    				$data->action = "check";
+    				$data->poker = $poker;
+    				
+    				$data->upnum = $upnum;
+    				$data->downunm = $downunm;
+
+    				$winup = array_keys($upnum);
+    				$windown = array_keys($downunm);
+						print_r($upnum);
+    					print_r($downunm);
+    				if($winup[0] == $windown[0] && $upnum[$winup[0]]>=$upnum[$winup[1]] && $downunm[$windown[0]]>=$downunm[$windown[1]]){
+    					print_r($upnum);
+    					print_r($downunm);
+    					$data->id = $winup[0];
+    					$data->money = $tablemoney;
+    					$tablemoney = 0;
+    					$gameing = 0;
+    				}else{
+    					if(count($winup) == 3){
+    						// print_r($winup[2]);
+
+    						// unset($online[$winup[2]]);
+							// print_r($online);
+
+    						$online = array_values($online);
+    					}
+    				}
+    			}
+
+    		break;	
     	default:
     		# code...
     		break;
     }
-    $data->money = $money;
-    
+    $data->gameing = $gameing;
+    $data->tablemoney = $tablemoney;
+    $data->online = $online;
     $data = json_encode($data);
 	broadcast($data);
 }
@@ -74,15 +145,15 @@ function close($connection)
 
 	broadcast($data);
 
-    if($connection->uid || $connection->uid == 0){
-    	foreach($online as $key => $value){
-    	  if($value == $connection->uid){
-    	     unset($online[$key]);
-    	  }
-    	}
-    	$online = array_values($online);
-    	array_push($global_uid,$connection->uid);
+
+    foreach($online as $key => $value){
+      if($value == $connection->uid){
+         unset($online[$key]);
+      }
     }
+    $online = array_values($online);
+    array_push($global_uid,$connection->uid);
+ 
 }
 
 

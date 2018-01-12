@@ -40,38 +40,38 @@ body{
 	width: 200px;
 	height: 200px;
 	top:200px;
-	position:absolute;
-}
-.user5{
-	width: 200px;
-	height: 200px;
-	top:200px;
 	right: 0px;
 	position:absolute;
 }
-.user6{
-	width: 200px;
-	height: 200px;
-	left:300px;
-	top: 400px;
-	position:absolute;
-}
-.user7{
+.user5{
 	width: 200px;
 	height: 200px;
 	left:900px;
 	top: 400px;
 	position:absolute;
 }
-.user8{
+.user6{
 	width: 200px;
 	height: 200px;
 	left:600px;
 	top: 400px;
 	position:absolute;
 }
+.user7{
+	width: 200px;
+	height: 200px;
+	left:300px;
+	top: 400px;
+	position:absolute;
+}
+.user8{
+	width: 200px;
+	height: 200px;
+	top:200px;
+	position:absolute;
+}
 
-.start, .check, .raise, .call, .flod{
+.start, .raise, .call, .flod, .yes{
 	color: rgba(255,255,255,1);
 	background-color: rgba(219,87,5,1);
 	font-weight: 700;
@@ -114,7 +114,7 @@ body{
 	top: 275px;
 	left: 660px;
 }
-.check{
+/*.check{
 	width: 100px;
 	height: 50px;
 	position:absolute;
@@ -126,9 +126,9 @@ body{
 	bottom: 100px;
 	position:absolute;
 	right:  500px;
-}
+}*/
 
-.raise, .call, .flod{
+.raise, .call, .flod, .yes{
 	margin-left: 10px;
 	display:none;
 }
@@ -157,6 +157,14 @@ body{
 	float: left;
 	bottom: 100px;
 	left: 550px;
+}
+.yes{
+	width: 100px;
+	height: 50px;
+	position:absolute;
+	float: left;
+	bottom: 100px;
+	left: 690px;
 }
 
 img{
@@ -215,10 +223,3 @@ img:hover{
 	font-size: 100px;
 }
 
-.web{
-	position:absolute;
-	bottom: 100px;
-	width: 100px;
-	height: 50px;
-	background-color: green;
-}
