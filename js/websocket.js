@@ -113,8 +113,20 @@ websocket.onmessage = function(e) {
 			if(length(data.online) == 1){
 				$('.check').click();
 			}
+
+			if(data.online[0] == id) {
+				setTimeout(function(){
+					if(data.gameing){
+						$('.start').click();
+					}else{
+						$('.tablemoney').html('');
+						$('.start').show();
+					}
+					
+				}, 8000);
+			}
 		}
-		
+		onlinegame = data.onlinegame;
 
 	}else{
 		if(e.data){

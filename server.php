@@ -5,6 +5,7 @@ use \Workerman\Lib\Timer;
 $global = 0;
 $global_uid = [1,2,3,4,5,6,7,8];
 $online = [];
+$onlinegame = [];
 $tablemoney = 0;
 $yesnum = 0;
 $gameing = 0;
@@ -29,7 +30,7 @@ function connection($connection)
 // 当客户端发送消息过来时，转发给所有人
 function message($connection, $data)
 {
-    global $worker, $online, $poker, $tablemoney, $yesnum, $pokered, $gameing, $upnum, $downunm;
+    global $worker, $online, $onlinegame, $poker, $tablemoney, $yesnum, $pokered, $gameing, $upnum, $downunm;
 
     $data = json_decode($data);
     $data->userid = $connection->uid;
@@ -40,6 +41,7 @@ function message($connection, $data)
     			if (!in_array($connection->uid, $online)){
     				if($gameing == 0){
     					array_push($online,$connection->uid);
+    					array_push($onlinegame,$connection->uid);
     				}
 				}
     			$data->gameing = $gameing;
@@ -47,6 +49,9 @@ function message($connection, $data)
     	case 'start':
     			if (!in_array($connection->uid, $online)){
     				array_push($online,$connection->uid);
+				}
+				if($onlinegame != $online){
+					$online = $onlinegame;
 				}
 				shuffle($poker);
 				$data->poker = $poker;
@@ -103,13 +108,12 @@ function message($connection, $data)
 						print_r($upnum);
     					print_r($downunm);
     				if($winup[0] == $windown[0] && $upnum[$winup[0]]>=$upnum[$winup[1]] && $downunm[$windown[0]]>=$downunm[$windown[1]]){
-    					print_r($upnum);
-    					print_r($downunm);
     					$data->id = $winup[0];
     					$data->money = $tablemoney;
     					$tablemoney = 0;
     					$gameing = 0;
     				}else{
+
     					if(count($winup) == 3){
     						// print_r($winup[2]);
 
@@ -129,6 +133,7 @@ function message($connection, $data)
     $data->gameing = $gameing;
     $data->tablemoney = $tablemoney;
     $data->online = $online;
+    $data->onlinegame = $onlinegame;
     $data = json_encode($data);
 	broadcast($data);
 }
@@ -136,7 +141,7 @@ function message($connection, $data)
 // 当客户端断开时，广播给所有客户端
 function close($connection)
 {
-    global $worker, $global_uid, $online;
+    global $worker, $global_uid, $online, $onlinegame;
     $data = new stdClass(); 
     $data->userid = $connection->uid;
     $data->action = "quit";
@@ -149,6 +154,7 @@ function close($connection)
     foreach($online as $key => $value){
       if($value == $connection->uid){
          unset($online[$key]);
+         unset($onlinegame[$key]);
       }
     }
     $online = array_values($online);

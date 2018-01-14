@@ -215,6 +215,8 @@ $('.web').click(function (){
 	$('.web').hide();
 });
 
+
+
 $(function() {
 	$('#message').keypress(function(e) {
 		if ( e.keyCode == 13 && this.value ) {

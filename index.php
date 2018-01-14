@@ -69,7 +69,9 @@
 		<div class="flod">棄牌</div>
 		<div class="web"></div>
 	</div>
-	
+	<div class="online">
+		
+	</div>
 	<script src="js/main.js?version=<?php echo rand()?>"></script>
 	<link rel="stylesheet" type="text/css" href="css/style.css?version=<?php echo rand()?>">
 	<div id='body'>
