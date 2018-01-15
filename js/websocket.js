@@ -9,47 +9,53 @@ for (var i = 1; i < 9; i++) {
 
 
 function length(o) {
-    var count = 0;
-    for(var i in o){
-        count ++;
-    }
-    return count;
+	var count = 0;
+	for (var i in o) {
+		count++;
+	}
+	return count;
 };
 
-websocket.onopen = function(e) {
+websocket.onopen = function (e) {
 	log("連線成功");
 	$('.web').click();
 };
-websocket.onmessage = function(e) {
+websocket.onmessage = function (e) {
 
-	
-	$( '.user'+ id ).sortable();
-	$( "bady" ).disableSelection();
+	$('.user' + id).sortable({
+		update: function (event, ui) {
+			w = parseInt($('.user' + id).find("img").eq(0).attr('data'));
+			x = parseInt($('.user' + id).find("img").eq(1).attr('data'));
+			y = parseInt($('.user' + id).find("img").eq(2).attr('data'));
+			z = parseInt($('.user' + id).find("img").eq(3).attr('data'));
+			changnum(w, x, y, z);
+			log('第一副點數' + a + '第二副點數' + b);
+		}
+	});
+	$("bady").disableSelection();
 
-	if(isJSON(e.data)){
+	if (isJSON(e.data)) {
 		data = JSON.parse(e.data);
-		if(!id){
+		if (!id) {
 			id = data.userid;
 		}
 
-		if(data.action == "ready"){
+		if (data.action == "ready") {
 			log("收到服务端的消息：" + data.name + "已準備");
-			for (var i = 0; i < data.online.length; i++) {
-				user[data.online[i]] = true;
-				usernum++;
-			}
-			if(data.online[0] == id && data.gameing == 0){
+			if (data.onlinegame[0] == id && data.gameing == 0) {
 				$('.start').show();
 			}
-
 		}
 
-		if(data.action == "masg"){
+		if (data.action == "masg") {
 			log("收到服务端的消息：" + data.name + "傳送了" + data.masg);
 		}
 
-		if(data.action == "start"){
-
+		if (data.action == "start") {
+			raisenum = 0;
+			for (var i = 0; i < data.online.length; i++) {
+				user[data.online[i]] = true;
+			}
 			$('.gitporker').click();
 
 			tablemoney = data.tablemoney;
@@ -57,112 +63,119 @@ websocket.onmessage = function(e) {
 			poker = data.poker;
 			for (var i = 1; i < 9; i++) {
 				if (user[i]) {
-					$('.user'+i).css("border-style","dashed");
-					$('.user'+i).css("border-color","black");
-					$('.user'+i).html('<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />'+'<img src="img/Red_Back.svg" />');
-					if(i == id){
-						$('.user'+id).html('<img data="'+poker[0+(i*4)]+'" src="img/'+poker[0+(i*4)]+'.svg" />'+'<img data="'+poker[1+(i*4)]+'" src="img/'+poker[1+(i*4)]+'.svg" />'+'<img data="'+poker[2+(i*4)]+'" src="img/'+poker[2+(i*4)]+'.svg" />'+'<img data="'+poker[3+(i*4)]+'" src="img/'+poker[3+(i*4)]+'.svg" />');
+					$('.user' + i).css("border-style", "dashed");
+					$('.user' + i).css("border-color", "black");
+					$('.user' + i).html('<img src="img/Red_Back.svg" />' + '<img src="img/Red_Back.svg" />' + '<img src="img/Red_Back.svg" />' + '<img src="img/Red_Back.svg" />');
+					if (i == id) {
+						$('.user' + id).html('<img data="' + poker[0 + (i * 4)] + '" src="img/' + poker[0 + (i * 4)] + '.svg" />' + '<img data="' + poker[1 + (i * 4)] + '" src="img/' + poker[1 + (i * 4)] + '.svg" />' + '<img data="' + poker[2 + (i * 4)] + '" src="img/' + poker[2 + (i * 4)] + '.svg" />' + '<img data="' + poker[3 + (i * 4)] + '" src="img/' + poker[3 + (i * 4)] + '.svg" />');
 					}
-				}else{
-					$('.user'+i).empty();
-					$('.user'+i).css("border-style","");
+				} else {
+					$('.user' + i).empty();
+					$('.user' + i).css("border-style", "");
 				}
 			}
 		}
 
-		if(data.action == "check"){
+		if (data.action == "check") {
+			for (var i = 1; i < data.online.length; i++) {
+				user[data.online[i]] = true;
+			}
 			$('.check').click();
 			var upnum = [];
 			var downunm = [];
 			pokered = data.pokered;
 			for (var i = 1; i < 9; i++) {
-				if(user[i]){
-					$('.user'+i).html('<img data="'+pokered[0+(i*4)]+'" src="img/'+pokered[0+(i*4)]+'.svg" />'+'<img data="'+pokered[1+(i*4)]+'" src="img/'+pokered[1+(i*4)]+'.svg" />'+'<img data="'+pokered[2+(i*4)]+'" src="img/'+pokered[2+(i*4)]+'.svg" />'+'<img data="'+pokered[3+(i*4)]+'" src="img/'+pokered[3+(i*4)]+'.svg" />');
+				if (user[i]) {
+					$('.user' + i).html('<img data="' + pokered[0 + (i * 4)] + '" src="img/' + pokered[0 + (i * 4)] + '.svg" />' + '<img data="' + pokered[1 + (i * 4)] + '" src="img/' + pokered[1 + (i * 4)] + '.svg" />' + '<img data="' + pokered[2 + (i * 4)] + '" src="img/' + pokered[2 + (i * 4)] + '.svg" />' + '<img data="' + pokered[3 + (i * 4)] + '" src="img/' + pokered[3 + (i * 4)] + '.svg" />');
 				}
 			}
-			$('.user'+data.id).css("border-color","red");
+			$('.user' + data.id).css("border-color", "red");
+
+
 			if (data.id == id) {
 				money = parseInt($(".money").html());
-				$('.money').html(data.money+money);
+				$('.money').html(data.money + money);
+				log('賺了' + data.money);
 			}
-			console.log(data.gameing);
-			if(data.online[0] == id) {
-				setTimeout(function(){
-					if(data.gameing){
-						$('.start').click();
-					}else{
-						$('.tablemoney').html('');
-						$('.start').show();
-					}
-					
-				}, 8000);
+			console.log(data.online, id);
+			if (data.online[0] == id) {
+				setTimeout(function () {
+					$('.tablemoney').html('');
+					$('.start').show();
+				}, 2000);
 			}
 
-			
+
 		}
 
-		if(data.action == "restart"){
+		if (data.action == "restart") {
 			$('.start').click();
 		}
 
-		if(data.action == "quit"){
+		if (data.action == 'flod') {
 			user[data.userid] = false;
-			$('.user'+data.userid).empty();
-			$('.user'+data.userid).css("border-style","");
-			console.log(length(data.online));
-			if(length(data.online) == 1){
-				$('.check').click();
-			}
-
-			if(data.online[0] == id) {
-				setTimeout(function(){
-					if(data.gameing){
-						$('.start').click();
-					}else{
-						$('.tablemoney').html('');
-						$('.start').show();
-					}
-					
-				}, 8000);
-			}
+			$('.user' + data.userid).empty();
+			$('.user' + data.userid).css("border-style", "");
 		}
-		onlinegame = data.onlinegame;
 
-	}else{
-		if(e.data){
+		if (data.action == "quit") {
+			user[data.userid] = false;
+			$('.user' + data.userid).empty();
+			$('.user' + data.userid).css("border-style", "");
+			// if (data.online[0] == id) {
+			// 	setTimeout(function () {
+			// 		if (data.gameing) {
+			// 			$('.start').click();
+			// 		} else {
+			// 			$('.tablemoney').html('');
+			// 			$('.start').show();
+			// 		}
+
+			// 	}, 800);
+			// }
+		}
+		if (data.msg) {
+			log(data.msg);
+		}
+		if (data.unid) {
+			user[data.unid] = false;
+		}
+
+	} else {
+		if (e.data) {
 			log(e.data);
 		}
 	}
 };
-websocket.onerror = function(e) {
+websocket.onerror = function (e) {
 	console.log(e);
 	websocket.close();
 };
-websocket.onclose = function(e) {
+websocket.onclose = function (e) {
 	log("斷線 5 秒後重新整理");
 
 	websocket.close();
 
-	setTimeout(function(){
+	setTimeout(function () {
 		location.reload();
-	},5000);
+	}, 5000);
 };
 
-function log( text ) {
+function log(text) {
 	$log = $('#log');
 	//Add text to log
-	$log.append(($log.val()?"\n":'')+text);
+	$log.append(($log.val() ? "\n" : '') + text);
 	//Autoscroll
 	$log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
 }
 
 function isJSON(str) {
-    if (typeof str == 'string') {
-        try {
-            JSON.parse(str);
-            return true;
-        } catch(e) {
-            return false;
-        }
-    }   
+	if (typeof str == 'string') {
+		try {
+			JSON.parse(str);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
 }

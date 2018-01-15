@@ -30,71 +30,78 @@ function connection($connection)
 // 当客户端发送消息过来时，转发给所有人
 function message($connection, $data)
 {
-    global $worker, $online, $onlinegame, $poker, $tablemoney, $yesnum, $pokered, $gameing, $upnum, $downunm;
+    global $worker, $online, $onlinegame, $poker, $tablemoney, $yesnum, $pokered, $gameing, $upnum, $downunm, $name;
 
     $data = json_decode($data);
     $data->userid = $connection->uid;
     
-
     switch ($data->action) {
     	case 'ready':
-    			if (!in_array($connection->uid, $online)){
-    				if($gameing == 0){
-    					array_push($online,$connection->uid);
+    			if (!in_array($connection->uid, $onlinegame)){
     					array_push($onlinegame,$connection->uid);
-    				}
 				}
-    			$data->gameing = $gameing;
+				$data->gameing = $gameing;
+				$name[$data->userid] = $data->name;
     		break;
-    	case 'start':
+		case 'start':
+				
     			if (!in_array($connection->uid, $online)){
     				array_push($online,$connection->uid);
 				}
 				if($onlinegame != $online){
-					$online = $onlinegame;
+					if ($gameing == 0) {
+						$online = $onlinegame;
+					}
+					
 				}
-				shuffle($poker);
-				$data->poker = $poker;
-				$tablemoney = $tablemoney+count($online)*10;
-				$gameing = 1;
-				$yesnum = 0;
+				if(count($onlinegame) == 1){
+					$data->action = "quit";
+				}else{
+					shuffle($poker);
+					$data->poker = $poker;
+					$tablemoney = $tablemoney+count($online)*10;
+					$gameing = 1;
+					$yesnum = 0;
+					$upnum = [];
+					$downunm = [];
+				}
+				
     		break;
     	case 'raise':
-    			
+    			$raisenum = '';
     		break;
     	case 'flod':
     			$data->userid = $connection->uid;
-    			$data->action = "quit";
-    			$data->masg = "quit";
     			foreach($online as $key => $value){
-    			  if($value == $connection->uid){
-    			     unset($online[$key]);
-    			  }
+    				if($value == $connection->uid){
+    			    	unset($online[$key]);
+    				}
     			}
-    			$online = array_values($online);
+				$online = array_values($online);
+				$data->money = 0;
+				$data->action = "flod";				
     		break;
     	case 'restart':
     			$data->action = "restart";
     			$tablemoney = 0;
     			$data->startnum = 1;
     		break;
-    	case 'yes':
-    			$data->action = "yes";
-    			$yesnum++;
+		case 'yes':
+				
+				$yesnum++;
+				$pokered[0+$data->userid*4] = $data->w;
+				$pokered[1+$data->userid*4] = $data->x;
+				$pokered[2+$data->userid*4] = $data->y;
+				$pokered[3+$data->userid*4] = $data->z;
 
-    			$pokered[0+$data->userid*4] = $data->w;
-    			$pokered[1+$data->userid*4] = $data->x;
-    			$pokered[2+$data->userid*4] = $data->y;
-    			$pokered[3+$data->userid*4] = $data->z;
+				if (in_array($connection->uid,$online)) {
+					$upnum[$data->userid] = $data->upnum;
+    				$downunm[$data->userid] = $data->downunm;
+				}
 
-    			$upnum[$data->userid] = $data->upnum;
-    			$downunm[$data->userid] = $data->downunm;
-    			
     			$data->pokered = $pokered;
-
-    			
     			if(count($online) == $yesnum){
-    				sleep(1);
+    				usleep(3000);
     				arsort($upnum);
     				arsort($downunm);
     				$data->action = "check";
@@ -105,24 +112,30 @@ function message($connection, $data)
 
     				$winup = array_keys($upnum);
     				$windown = array_keys($downunm);
-						print_r($upnum);
-    					print_r($downunm);
-    				if($winup[0] == $windown[0] && $upnum[$winup[0]]>=$upnum[$winup[1]] && $downunm[$windown[0]]>=$downunm[$windown[1]]){
-    					$data->id = $winup[0];
-    					$data->money = $tablemoney;
-    					$tablemoney = 0;
-    					$gameing = 0;
-    				}else{
+					if ($gameing == 0) {
+						$online = $onlinegame;
+					}
+					print_r($upnum);
+					print_r($downunm);
 
-    					if(count($winup) == 3){
-    						// print_r($winup[2]);
-
-    						// unset($online[$winup[2]]);
-							// print_r($online);
-
-    						$online = array_values($online);
-    					}
-    				}
+					if($upnum[$winup[0]]>=$upnum[$winup[1]] && $downunm[$windown[0]]>=$downunm[$windown[1]]){
+						$data->id = $winup[0];
+						$data->money = $tablemoney;
+						$tablemoney = 0;
+						$gameing = 0;
+						$data->msg = $name[$winup[0]]."贏了";
+					}else{
+						$data->msg = "和局";
+						$gameing = 1;
+						if (end($winup) == end($windown)) {
+							unset($online[end($winup)]);
+							$data->unid = end($winup);
+							$data->msg = $name[end($winup)]."點數最小淘汰";
+							
+						}
+					}
+					usleep(4000);
+					$online = array_values($online);
     			}
 
     		break;	
@@ -145,7 +158,6 @@ function close($connection)
     $data = new stdClass(); 
     $data->userid = $connection->uid;
     $data->action = "quit";
-    $data->masg = "quit";
     $data = json_encode($data);
 
 	broadcast($data);
@@ -158,6 +170,7 @@ function close($connection)
       }
     }
     $online = array_values($online);
+    $onlinegame = array_values($onlinegame);
     array_push($global_uid,$connection->uid);
  
 }
@@ -182,6 +195,11 @@ function sendMessageByUid($uid, $message)
         $connection = $worker->connections[$uid];
         $connection->send($message);
     }
+}
+
+function porkcom($upnum, $downunm)
+{
+	# code...
 }
 
 // 创建一个文本协议的Worker监听2347接口

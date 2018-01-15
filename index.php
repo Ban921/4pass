@@ -52,22 +52,20 @@
 		<div class="tablemoney"></div>
 		<div class="start">開始</div>
 		<div class="gitporker"></div>
-		<div class="user1"></div>
-		<div class="user2"></div>
-		<div class="user3"></div>
-		<div class="user4"></div>
-		<div class="user5"></div>
-		<div class="user6"></div>
-		<div class="user7"></div>
-		<div class="user8"></div>
+		<?php 
+			for ($i=1; $i < 8; $i++) { 
+				echo '<div class="user'.$i.'"></div>';				
+			}
+		?>
 	</div>
 	<div class="button">
-		<div class="check">比牌</div>
-		<!-- <div class="raise">加碼</div> -->
+		<div class="check"></div>
+		<div class="raise">加碼</div>
 		<!-- <div class="call">過/跟牌</div> -->
 		<div class="yes">確定</div>
 		<div class="flod">棄牌</div>
 		<div class="web"></div>
+		<div class="restart"></div>
 	</div>
 	<div class="online">
 		
