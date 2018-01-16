@@ -6,6 +6,7 @@ $global = 0;
 $global_uid = [1,2,3,4,5,6,7,8];
 $online = [];
 $onlinegame = [];
+$raisenum = [];
 $tablemoney = 0;
 $yesnum = 0;
 $gameing = 0;
@@ -30,7 +31,7 @@ function connection($connection)
 // 当客户端发送消息过来时，转发给所有人
 function message($connection, $data)
 {
-    global $worker, $online, $onlinegame, $poker, $tablemoney, $yesnum, $pokered, $gameing, $upnum, $downunm, $name;
+    global $worker, $online, $onlinegame, $poker, $tablemoney, $yesnum, $pokered, $gameing, $upnum, $downunm, $name, $raisenum;
 
     $data = json_decode($data);
     $data->userid = $connection->uid;
@@ -64,11 +65,20 @@ function message($connection, $data)
 					$yesnum = 0;
 					$upnum = [];
 					$downunm = [];
+					$winup = [];
+					$windown = [];
+					$raisenum = [];
 				}
 				
     		break;
     	case 'raise':
-    			$raisenum = '';
+				$raisenum[$connection->uid] = $data->raisenum;
+				$tablemoney = $tablemoney+10;
+				$data->action = "raise";
+				$data->raisenum = $raisenum;
+				$raisemax = max($raisenum);
+				$data->raisemax = $raisemax;
+				
     		break;
     	case 'flod':
     			$data->userid = $connection->uid;
@@ -79,7 +89,8 @@ function message($connection, $data)
     			}
 				$online = array_values($online);
 				$data->money = 0;
-				$data->action = "flod";				
+				$data->action = "flod";
+				$yesnum++;
     		break;
     	case 'restart':
     			$data->action = "restart";
@@ -118,19 +129,23 @@ function message($connection, $data)
 					print_r($upnum);
 					print_r($downunm);
 
-					if($upnum[$winup[0]]>=$upnum[$winup[1]] && $downunm[$windown[0]]>=$downunm[$windown[1]]){
+					if($winup[0] == $windown[0]){
 						$data->id = $winup[0];
 						$data->money = $tablemoney;
 						$tablemoney = 0;
 						$gameing = 0;
 						$data->msg = $name[$winup[0]]."贏了";
 					}else{
-						$data->msg = "和局";
 						$gameing = 1;
-						if (end($winup) == end($windown)) {
-							unset($online[end($winup)]);
-							$data->unid = end($winup);
-							$data->msg = $name[end($winup)]."點數最小淘汰";
+						if(end($winup) == end($windown)) {
+							$data->msg = $name[end($winup)]."被夾了";
+							$data->userid = end($winup);
+							$data->lost = end($winup);
+							foreach($online as $key => $value){
+								if($value == $data->userid){
+									unset($online[$key]);
+								}
+							}
 							
 						}
 					}
@@ -163,12 +178,12 @@ function close($connection)
 	broadcast($data);
 
 
-    foreach($online as $key => $value){
-      if($value == $connection->uid){
-         unset($online[$key]);
-         unset($onlinegame[$key]);
-      }
-    }
+	foreach($online as $key => $value){
+		if($value == $connection->uid){
+			unset($online[$key]);
+			unset($onlinegame[$key]);
+		}
+	}
     $online = array_values($online);
     $onlinegame = array_values($onlinegame);
     array_push($global_uid,$connection->uid);
@@ -213,5 +228,6 @@ $worker->onMessage = 'message';
 $worker->onClose = 'close';
 
 Worker::runAll();
+
 
 

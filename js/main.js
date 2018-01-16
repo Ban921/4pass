@@ -218,6 +218,16 @@ function findArray(key, value, haystack, strict) {
 	return false;
 }
 
+Array.prototype.max = function () {
+	var max = this[0];
+	this.forEach(function (ele, index, arr) {
+		if (ele > max) {
+			max = ele;
+		}
+	})
+	return max;
+}
+
 
 $('.start').click(function () {
 	websocket.send(JSON.stringify({
@@ -234,9 +244,11 @@ $('.gitporker').click(function () {
 			usernum++
 		};
 	}
+	if (user[id]) {
+		gamemoney = parseInt($(".money").html());
+		$(".money").html(gamemoney - 10);
+	}
 
-	gamemoney = parseInt($(".money").html());
-	$(".money").html(gamemoney - 10);
 
 	$('.start').hide();
 	if (user[id]) {
@@ -246,35 +258,39 @@ $('.gitporker').click(function () {
 });
 
 $('.yes').click(function () {
-	w = parseInt($('.user' + id).find("img").eq(0).attr('data'));
-	x = parseInt($('.user' + id).find("img").eq(1).attr('data'));
-	y = parseInt($('.user' + id).find("img").eq(2).attr('data'));
-	z = parseInt($('.user' + id).find("img").eq(3).attr('data'));
+	if (raisenum >= raisemax) {
+		w = parseInt($('.user' + id).find("img").eq(0).attr('data'));
+		x = parseInt($('.user' + id).find("img").eq(1).attr('data'));
+		y = parseInt($('.user' + id).find("img").eq(2).attr('data'));
+		z = parseInt($('.user' + id).find("img").eq(3).attr('data'));
 
-	if (changnum(w, x, y, z)) {
-		$('.raise,.call,.flod,.check,.yes').hide();
+		if (changnum(w, x, y, z)) {
+			$('.raise,.call,.flod,.check,.yes').hide();
 
-		websocket.send(JSON.stringify({
-			'action': "yes",
-			'name': name,
-			'userid': id,
-			'upnum': a,
-			'downunm': b,
-			'w': w,
-			'x': x,
-			'y': y,
-			'z': z,
-		}));
+			websocket.send(JSON.stringify({
+				'action': "yes",
+				'name': name,
+				'userid': id,
+				'upnum': a,
+				'downunm': b,
+				'w': w,
+				'x': x,
+				'y': y,
+				'z': z,
+			}));
+		} else {
+			alert("前墩不能大於後墩");
+		}
 	} else {
-		alert("前墩不能大於後墩");
+		alert("加碼不夠");
 	}
+
 
 });
 
 $('.check').click(function () {
 
 	var usernum = 0;
-
 	for (var i = 1; i < 9; i++) {
 		if (user[i]) {
 			if (i != id) {
@@ -284,7 +300,6 @@ $('.check').click(function () {
 	}
 
 	tablemoney = parseInt($(".tablemoney").html());
-	tablemoney = tablemoney + (raisenum * 10 * usernum);
 	$('.tablemoney').html(tablemoney);
 
 });
@@ -299,7 +314,6 @@ $('.flod').click(function () {
 	tablemoney = 0;
 	$('.tablemoney').html(tablemoney);
 	$('.raise,.call,.flod,.check,.yes').hide();
-
 });
 
 
@@ -309,13 +323,13 @@ $('.raise').click(function () {
 	$(".money").html(gamemoney - 10);
 	tablemoney = tablemoney + 10;
 	$('.tablemoney').html(tablemoney);
-	console.log(raisenum);
 	websocket.send(JSON.stringify({
 		'action': "raise",
 		'name': name,
 		'userid': id,
 		'raisenum': raisenum,
 	}));
+	console.log(raisemax);
 });
 
 
@@ -336,12 +350,10 @@ $('.restart').click(function () {
 $(function () {
 	$('#message').keypress(function (e) {
 		if (e.keyCode == 13 && this.value) {
-			//log( 'You: ' + this.value );
 			websocket.send(JSON.stringify({
 				'action': "masg",
 				'name': name,
 				'masg': this.value,
-
 			}));
 			$(this).val('');
 		}

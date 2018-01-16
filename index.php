@@ -54,22 +54,20 @@
 		<div class="gitporker"></div>
 		<?php 
 			for ($i=1; $i < 8; $i++) { 
-				echo '<div class="user'.$i.'"></div>';				
+				echo '<div class="user'.$i.'"></div>';			
 			}
 		?>
 	</div>
 	<div class="button">
 		<div class="check"></div>
-		<!-- <div class="raise">加碼</div> -->
+		<div class="raise">加碼</div>
 		<!-- <div class="call">過/跟牌</div> -->
 		<div class="yes">確定</div>
 		<div class="flod">棄牌</div>
 		<div class="web"></div>
 		<div class="restart"></div>
 	</div>
-	<div class="online">
-		
-	</div>
+	<div class="online"></div>
 	<script src="js/main.js?version=<?php echo rand()?>"></script>
 	<link rel="stylesheet" type="text/css" href="css/style.css?version=<?php echo rand()?>">
 	<div id='body'>

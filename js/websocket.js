@@ -2,6 +2,7 @@ var wsUri = "ws://192.168.106.138:9300";
 var output;
 var websocket = new WebSocket(wsUri);
 var id = '';
+
 var user = new Array();
 for (var i = 1; i < 9; i++) {
 	user[i] = false;
@@ -48,11 +49,18 @@ websocket.onmessage = function (e) {
 		}
 
 		if (data.action == "masg") {
-			log("收到服务端的消息：" + data.name + "傳送了" + data.masg);
+			log(data.name + "傳送了:" + data.masg);
 		}
 
 		if (data.action == "start") {
 			raisenum = 0;
+			raisemax = 0;
+			if (data.userid) {
+				user[data.userid] = false;
+				$('.user' + data.userid).empty();
+				$('.user' + data.userid).css("border-style", "");
+			}
+
 			for (var i = 0; i < data.online.length; i++) {
 				user[data.online[i]] = true;
 			}
@@ -77,7 +85,7 @@ websocket.onmessage = function (e) {
 		}
 
 		if (data.action == "check") {
-			for (var i = 1; i < data.online.length; i++) {
+			for (var i = 0; i < data.online.length; i++) {
 				user[data.online[i]] = true;
 			}
 			$('.check').click();
@@ -97,19 +105,28 @@ websocket.onmessage = function (e) {
 				$('.money').html(data.money + money);
 				log('賺了' + data.money);
 			}
-			console.log(data.online, id);
+			if (data.lost) {
+				user[data.userid] = false;
+				$('.user' + data.userid).empty();
+				$('.user' + data.userid).css("border-style", "");
+			}
 			if (data.online[0] == id) {
 				setTimeout(function () {
 					$('.tablemoney').html('');
 					$('.start').show();
 				}, 2000);
 			}
-
-
 		}
 
 		if (data.action == "restart") {
 			$('.start').click();
+		}
+
+		if (data.action == "raise") {
+			$('.tablemoney').html(data.tablemoney);
+			raisemax = data.raisemax;
+			raisearray = data.raisenum;
+			console.log(data.raisemax);
 		}
 
 		if (data.action == 'flod') {
@@ -122,17 +139,17 @@ websocket.onmessage = function (e) {
 			user[data.userid] = false;
 			$('.user' + data.userid).empty();
 			$('.user' + data.userid).css("border-style", "");
-			// if (data.online[0] == id) {
-			// 	setTimeout(function () {
-			// 		if (data.gameing) {
-			// 			$('.start').click();
-			// 		} else {
-			// 			$('.tablemoney').html('');
-			// 			$('.start').show();
-			// 		}
+			if (data.online.length == 1) {
+				setTimeout(function () {
+					if (data.gameing) {
+						$('.start').click();
+					} else {
+						$('.tablemoney').html('');
+						$('.start').show();
+					}
 
-			// 	}, 800);
-			// }
+				}, 800);
+			}
 		}
 		if (data.msg) {
 			log(data.msg);

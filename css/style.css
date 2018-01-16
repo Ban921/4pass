@@ -1,11 +1,12 @@
-body{
+body {
 	cursor: pointer;
-	overflow:hidden;
+	overflow: hidden;
 	background-image: url('../img/diceGameBg.png');
 	background-size: cover;
 	background-repeat: no-repeat;
 }
-.gametable{
+
+.gametable {
 	width: 1430px;
 	height: 630px;
 	position: absolute;
@@ -18,62 +19,73 @@ body{
 	background-repeat: no-repeat;
 }
 
-.user1{
+.user1 {
 	width: 200px;
 	height: 200px;
-	left:300px;
-	position:absolute;
-}
-.user2{
-	width: 200px;
-	height: 200px;
-	left:600px;
-	position:absolute;
-}
-.user3{
-	width: 200px;
-	height: 200px;
-	left:900px;
-	position:absolute;
-}
-.user4{
-	width: 200px;
-	height: 200px;
-	top:200px;
-	right: 0px;
-	position:absolute;
-}
-.user5{
-	width: 200px;
-	height: 200px;
-	left:900px;
-	top: 400px;
-	position:absolute;
-}
-.user6{
-	width: 200px;
-	height: 200px;
-	left:600px;
-	top: 400px;
-	position:absolute;
-}
-.user7{
-	width: 200px;
-	height: 200px;
-	left:300px;
-	top: 400px;
-	position:absolute;
-}
-.user8{
-	width: 200px;
-	height: 200px;
-	top:200px;
-	position:absolute;
+	left: 300px;
+	position: absolute;
 }
 
-.start, .raise, .call, .flod, .yes{
-	color: rgba(255,255,255,1);
-	background-color: rgba(219,87,5,1);
+.user2 {
+	width: 200px;
+	height: 200px;
+	left: 600px;
+	position: absolute;
+}
+
+.user3 {
+	width: 200px;
+	height: 200px;
+	left: 900px;
+	position: absolute;
+}
+
+.user4 {
+	width: 200px;
+	height: 200px;
+	top: 200px;
+	right: 0px;
+	position: absolute;
+}
+
+.user5 {
+	width: 200px;
+	height: 200px;
+	left: 900px;
+	top: 400px;
+	position: absolute;
+}
+
+.user6 {
+	width: 200px;
+	height: 200px;
+	left: 600px;
+	top: 400px;
+	position: absolute;
+}
+
+.user7 {
+	width: 200px;
+	height: 200px;
+	left: 300px;
+	top: 400px;
+	position: absolute;
+}
+
+.user8 {
+	width: 200px;
+	height: 200px;
+	top: 200px;
+	position: absolute;
+}
+
+.start,
+.raise,
+.call,
+.flod,
+.yes {
+	color: rgba(255, 255, 255, 1);
+	background-color: rgba(219, 87, 5, 1);
 	font-weight: 700;
 	font-size: 3em;
 	display: block;
@@ -81,39 +93,42 @@ body{
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
 	border-radius: 8px;
-	-webkit-box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
-	-moz-box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
-	box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 25px rgba(0,0,0,.7);
+	-webkit-box-shadow: 0px 9px 0px rgba(219, 31, 5, 1), 0px 9px 25px rgba(0, 0, 0, .7);
+	-moz-box-shadow: 0px 9px 0px rgba(219, 31, 5, 1), 0px 9px 25px rgba(0, 0, 0, .7);
+	box-shadow: 0px 9px 0px rgba(219, 31, 5, 1), 0px 9px 25px rgba(0, 0, 0, .7);
 	text-align: center;
 	-webkit-transition: all .1s ease;
 	-moz-transition: all .1s ease;
 	-ms-transition: all .1s ease;
 	-o-transition: all .1s ease;
 	transition: all .1s ease;
-
 }
 
-.start:active, .check:active{
-	-webkit-box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
-	-moz-box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
-	box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
+.start:active,
+.check:active {
+	-webkit-box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px rgba(0, 0, 0, .9);
+	-moz-box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px rgba(0, 0, 0, .9);
+	box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px rgba(0, 0, 0, .9);
 	position: relative;
 }
 
-.start{
+.start {
 	width: 100px;
 	height: 50px;
-	position:absolute;
+	position: absolute;
 	top: 275px;
 	left: 660px;
 	float: left;
 	z-index: 11;
-	display:none;
+	display: none;
 }
-.start:active{
+
+.start:active {
 	top: 275px;
 	left: 660px;
 }
+
+
 /*.check{
 	width: 100px;
 	height: 50px;
@@ -128,55 +143,60 @@ body{
 	right:  500px;
 }*/
 
-.raise, .call, .flod, .yes{
+.raise,
+.call,
+.flod,
+.yes {
 	margin-left: 10px;
-	display:none;
+	display: none;
 }
 
-.raise{
+.raise {
 	width: 100px;
 	height: 50px;
-	position:absolute;
+	position: absolute;
 	bottom: 100px;
 	left: 350px;
 }
 
-.call{
+.call {
 	width: 170px;
 	height: 50px;
-	position:absolute;
+	position: absolute;
 	float: left;
 	bottom: 100px;
 	left: 350px;
 }
 
-.flod{
+.flod {
 	width: 100px;
 	height: 50px;
-	position:absolute;
+	position: absolute;
 	float: left;
 	bottom: 100px;
 	left: 550px;
 }
-.yes{
+
+.yes {
 	width: 100px;
 	height: 50px;
-	position:absolute;
+	position: absolute;
 	float: left;
 	bottom: 100px;
 	left: 690px;
 }
 
-img{
+img {
 	height: 100px;
 	width: 100px;
 	background-color: #BEBEBE;
 }
-img:hover{
-	top:10px;
+
+img:hover {
+	top: 10px;
 }
 
-.money{
+.money {
 	width: 250px;
 	height: 105px;
 	background-image: url(../img/money.png);
@@ -187,50 +207,52 @@ img:hover{
 	color: white;
 }
 
-#body{
+#body {
 	width: 100px;
-	position:absolute;
+	position: absolute;
 	bottom: 20px;
 	right: 0;
 }
 
-#log{
-	max-width:400px;
- 	max-height:100px;
-	min-width:400px;
- 	min-height:100px;
+#log {
+	max-width: 400px;
+	max-height: 100px;
+	min-width: 400px;
+	min-height: 100px;
 	width: 400px;
-    height: 100px;
-    position:absolute;
+	height: 100px;
+	position: absolute;
 	bottom: 20px;
 	right: 0;
 }
-#message{
+
+#message {
 	width: 400px;
-	position:absolute;
+	position: absolute;
 	bottom: 0;
 	right: 0;
 }
 
-.tablemoney{
+.tablemoney {
 	width: 150px;
 	height: 75px;
-	position:absolute;
+	position: absolute;
 	top: 250px;
 	left: 630px;
 	float: left;
 	z-index: 10;
-	display:none;
+	display: none;
 	font-size: 100px;
 }
 
-.online{
+.online {
 	width: 250px;
-    height: 400px;
-    background-color: black;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    z-index: 0;
-    opacity: 0.5;
+	height: 400px;
+	background-color: black;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: 0;
+	opacity: 0.5;
+	color: aliceblue;
 }
