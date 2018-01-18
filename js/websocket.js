@@ -53,8 +53,9 @@ websocket.onmessage = function (e) {
 		}
 
 		if (data.action == "start") {
-			raisenum = 0;
-			raisemax = 0;
+			raisenum = '';
+			raisenum1 = '';
+			raisemax = '';
 			if (data.userid) {
 				user[data.userid] = false;
 				$('.user' + data.userid).empty();
@@ -63,6 +64,7 @@ websocket.onmessage = function (e) {
 
 			for (var i = 0; i < data.online.length; i++) {
 				user[data.online[i]] = true;
+
 			}
 			$('.gitporker').click();
 
@@ -74,6 +76,7 @@ websocket.onmessage = function (e) {
 					$('.user' + i).css("border-style", "dashed");
 					$('.user' + i).css("border-color", "black");
 					$('.user' + i).html('<img src="img/Red_Back.svg" />' + '<img src="img/Red_Back.svg" />' + '<img src="img/Red_Back.svg" />' + '<img src="img/Red_Back.svg" />');
+					$('.type' + i).html('');
 					if (i == id) {
 						$('.user' + id).html('<img data="' + poker[0 + (i * 4)] + '" src="img/' + poker[0 + (i * 4)] + '.svg" />' + '<img data="' + poker[1 + (i * 4)] + '" src="img/' + poker[1 + (i * 4)] + '.svg" />' + '<img data="' + poker[2 + (i * 4)] + '" src="img/' + poker[2 + (i * 4)] + '.svg" />' + '<img data="' + poker[3 + (i * 4)] + '" src="img/' + poker[3 + (i * 4)] + '.svg" />');
 					}
@@ -95,6 +98,9 @@ websocket.onmessage = function (e) {
 			for (var i = 1; i < 9; i++) {
 				if (user[i]) {
 					$('.user' + i).html('<img data="' + pokered[0 + (i * 4)] + '" src="img/' + pokered[0 + (i * 4)] + '.svg" />' + '<img data="' + pokered[1 + (i * 4)] + '" src="img/' + pokered[1 + (i * 4)] + '.svg" />' + '<img data="' + pokered[2 + (i * 4)] + '" src="img/' + pokered[2 + (i * 4)] + '.svg" />' + '<img data="' + pokered[3 + (i * 4)] + '" src="img/' + pokered[3 + (i * 4)] + '.svg" />');
+					changnum(pokered[0 + (i * 4)], pokered[1 + (i * 4)], pokered[2 + (i * 4)], pokered[3 + (i * 4)]);
+					console.log(a, b);
+					$('.type' + i).html("第一副點數" + a + "第二副點數" + b);
 				}
 			}
 			$('.user' + data.id).css("border-color", "red");
@@ -115,6 +121,10 @@ websocket.onmessage = function (e) {
 					$('.tablemoney').html('');
 					$('.start').show();
 				}, 2000);
+			} else {
+				setTimeout(function () {
+					$('.tablemoney').html('');
+				}, 2000);
 			}
 		}
 
@@ -125,14 +135,18 @@ websocket.onmessage = function (e) {
 		if (data.action == "raise") {
 			$('.tablemoney').html(data.tablemoney);
 			raisemax = data.raisemax;
-			raisearray = data.raisenum;
-			console.log(data.raisemax);
+			raisenum = data.raisenum;
+			for (i in data.raisenum) {
+				console.log(data.raisenum[i]);
+				$('.type' + i).html("加碼次數" + data.raisenum[i]);
+			}
 		}
 
 		if (data.action == 'flod') {
 			user[data.userid] = false;
 			$('.user' + data.userid).empty();
 			$('.user' + data.userid).css("border-style", "");
+			$('.type' + data.userid).html();
 		}
 
 		if (data.action == "quit") {

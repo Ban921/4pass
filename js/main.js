@@ -185,50 +185,6 @@ function chklong(w, x, y, z) {
 	return false;
 }
 
-//A>B重牌
-function calculate(w, x, y, z) {
-	var rand = new Array;
-
-	rand = [w, x, y, z];
-
-	rand.sort(function () {
-		return Math.random() > 0.5 ? -1 : 1;
-	});
-	pokered = rand;
-
-	for (i = 0; i < rand.length; i++) {
-		rand[i] = parseInt(rand[i]);
-	}
-
-	if (changnum(rand[0], rand[1], rand[2], rand[3])) {
-
-	} else {
-		calculate(rand[0], rand[1], rand[2], rand[3]);
-	}
-}
-
-function findArray(key, value, haystack, strict) {
-	for (var i = 0; i < haystack.length; i++) {
-		if (typeof strict !== 'undefined' && strict === true) {
-			if (haystack[i][key] === value) return haystack[i];
-		} else {
-			if (haystack[i][key] == value) return haystack[i];
-		}
-	}
-	return false;
-}
-
-Array.prototype.max = function () {
-	var max = this[0];
-	this.forEach(function (ele, index, arr) {
-		if (ele > max) {
-			max = ele;
-		}
-	})
-	return max;
-}
-
-
 $('.start').click(function () {
 	websocket.send(JSON.stringify({
 		'action': "start",
@@ -258,7 +214,7 @@ $('.gitporker').click(function () {
 });
 
 $('.yes').click(function () {
-	if (raisenum >= raisemax) {
+	if (raisenum1 >= raisemax) {
 		w = parseInt($('.user' + id).find("img").eq(0).attr('data'));
 		x = parseInt($('.user' + id).find("img").eq(1).attr('data'));
 		y = parseInt($('.user' + id).find("img").eq(2).attr('data'));
@@ -309,7 +265,6 @@ $('.flod').click(function () {
 		'action': "flod",
 		'name': name,
 		'userid': id,
-
 	}));
 	tablemoney = 0;
 	$('.tablemoney').html(tablemoney);
@@ -319,7 +274,7 @@ $('.flod').click(function () {
 
 $('.raise').click(function () {
 	gamemoney = parseInt($(".money").html());
-	raisenum++;
+	raisenum1++;
 	$(".money").html(gamemoney - 10);
 	tablemoney = tablemoney + 10;
 	$('.tablemoney').html(tablemoney);
@@ -327,9 +282,8 @@ $('.raise').click(function () {
 		'action': "raise",
 		'name': name,
 		'userid': id,
-		'raisenum': raisenum,
+		'raisenum': raisenum1,
 	}));
-	console.log(raisemax);
 });
 
 

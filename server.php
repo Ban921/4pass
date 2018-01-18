@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/Workerman/Autoloader.php';
 use Workerman\Worker;
-use \Workerman\Lib\Timer;
+
 $global = 0;
 $global_uid = [1,2,3,4,5,6,7,8];
 $online = [];
@@ -76,6 +76,7 @@ function message($connection, $data)
 				$tablemoney = $tablemoney+10;
 				$data->action = "raise";
 				$data->raisenum = $raisenum;
+				$data->raisenum1 = $raisenum;
 				$raisemax = max($raisenum);
 				$data->raisemax = $raisemax;
 				
@@ -91,6 +92,9 @@ function message($connection, $data)
 				$data->money = 0;
 				$data->action = "flod";
 				$yesnum++;
+				
+				
+
     		break;
     	case 'restart':
     			$data->action = "restart";
@@ -126,8 +130,7 @@ function message($connection, $data)
 					if ($gameing == 0) {
 						$online = $onlinegame;
 					}
-					print_r($upnum);
-					print_r($downunm);
+					porkcom($upnum, $downunm, $winup, $windown);
 
 					if($winup[0] == $windown[0]){
 						$data->id = $winup[0];
@@ -146,7 +149,6 @@ function message($connection, $data)
 									unset($online[$key]);
 								}
 							}
-							
 						}
 					}
 					usleep(4000);
@@ -176,8 +178,6 @@ function close($connection)
     $data = json_encode($data);
 
 	broadcast($data);
-
-
 	foreach($online as $key => $value){
 		if($value == $connection->uid){
 			unset($online[$key]);
@@ -212,10 +212,20 @@ function sendMessageByUid($uid, $message)
     }
 }
 
-function porkcom($upnum, $downunm)
+function porkcom($upnum, $downunm, $winup, $windown)
 {
-	# code...
+	if(reset($upnum) == next($upnum) && $winup[0] != $windown[1]){
+		$a = $winup[0];
+		$winup[0] = $winup[1];
+		$winup[1] = $a;
+	}
+	if(reset($downunm) == next($downunm) && $windown[0] != $winup[1]){
+		$a = $windown[0];
+		$windown[0] = $windown[1];
+		$windown[1] = $a;
+	}
 }
+
 
 // 创建一个文本协议的Worker监听2347接口
 $worker = new Worker("websocket://192.168.106.138:9300");

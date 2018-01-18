@@ -55,6 +55,7 @@
 		<?php 
 			for ($i=1; $i < 8; $i++) { 
 				echo '<div class="user'.$i.'"></div>';			
+				echo '<div class="type'.$i.'"></div>';			
 			}
 		?>
 	</div>

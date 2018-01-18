@@ -79,6 +79,77 @@ body {
 	position: absolute;
 }
 
+.type1 {
+	width: 200px;
+	height: 100px;
+	left: 300px;
+	top: 200px;
+	font-size: 40px;
+	position: absolute;
+}
+
+.type2 {
+	width: 200px;
+	height: 100px;
+	left: 600px;
+	top: 200px;
+	font-size: 40px;
+	position: absolute;
+}
+
+.type3 {
+	width: 200px;
+	height: 100px;
+	left: 900px;
+	top: 200px;
+	font-size: 40px;
+	position: absolute;
+}
+
+.type4 {
+	width: 100px;
+	height: 200px;
+	top: 200px;
+	right: 0px;
+	font-size: 40px;
+	position: absolute;
+}
+
+.type5 {
+	width: 200px;
+	height: 100px;
+	left: 900px;
+	top: 400px;
+	font-size: 40px;
+	position: absolute;
+}
+
+.type6 {
+	width: 200px;
+	height: 100px;
+	left: 600px;
+	top: 400px;
+	font-size: 40px;
+	position: absolute;
+}
+
+.type7 {
+	width: 200px;
+	height: 100px;
+	left: 300px;
+	top: 400px;
+	font-size: 40px;
+	position: absolute;
+}
+
+.type8 {
+	width: 100px;
+	height: 200px;
+	top: 200px;
+	font-size: 40px;
+	position: absolute;
+}
+
 .start,
 .raise,
 .call,
