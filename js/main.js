@@ -25,56 +25,25 @@ function changnum(w, x, y, z) {
 		z = 13;
 	}
 
+
 	if (chk4pass(w, x, y, z)) {
 		a = 99;
-		b = 99;
+		b = 98;
 	} else {
 		//13等於兩張
-		if (chkpass(w, x, y, z)) {} else {
+		if (chkpass(w, x, y, z)) {
+
+		} else {
 			//12等於兩張大於10
 			if (chklong(w, x, y, z)) {} else {
 				a = 0;
 				b = 0;
-				if (w == 10) {
-					w = 0;
-				}
-				if (x == 10) {
-					x = 0;
-				}
-				if (y == 10) {
-					y = 0;
-				}
-				if (z == 10) {
-					z = 0;
-				}
-				//牌等於娃娃的時候 點數為0.5
-				if (w > 10) {
-					w = 0.5;
-				}
-				if (x > 10) {
-					x = 0.5;
-				}
-				if (y > 10) {
-					y = 0.5;
-				}
-				if (z > 10) {
-					z = 0.5;
-				}
-				if (a == '') {
-					a = w + x;
-				}
-				if (b == '') {
-					b = y + z;
-				}
-				if (a >= 10) {
-					a = a - 10;
-				}
-				if (b >= 10) {
-					b = b - 10;
-				}
+				num1(w, x);
+				num2(y, z);
 			}
 		}
 	}
+
 	if (a > b) {
 		return false;
 	} else {
@@ -145,20 +114,29 @@ function chk4pass(w, x, y, z) {
 //兩張一樣
 function chkpass(w, x, y, z) {
 	if (w == x) {
-		a = w + 12;
+		if (w == 1) {
+			a = w + 12 + 13;
+		} else {
+			a = w + 12;
+		}
+
 	} else {
 		if (chklong(w, x, y, z)) {} else {
 			a = num1(w, x);
 		}
 	}
 	if (y == z) {
-		b = y + 12;
+		if (y == 1) {
+			b = y + 12 + 13;
+		} else {
+			b = y + 12;
+		}
 	} else {
 		if (chklong(w, x, y, z)) {} else {
 			b = num2(y, z);
 		}
 	}
-	if (a == w + 12 || b == y + 12) {
+	if (a == w + 12 || b == y + 12 || a == w + 12 + 13 || b == y + 12 + 13) {
 		return true;
 	}
 	return false;
@@ -185,6 +163,8 @@ function chklong(w, x, y, z) {
 	return false;
 }
 
+
+
 $('.start').click(function () {
 	websocket.send(JSON.stringify({
 		'action': "start",
@@ -203,18 +183,13 @@ $('.gitporker').click(function () {
 	if (user[id]) {
 		gamemoney = parseInt($(".money").html());
 		$(".money").html(gamemoney - 10);
+		$('.raise , .flod, .tablemoney, .yes').show();
 	}
-
-
 	$('.start').hide();
-	if (user[id]) {
-		$('.raise, .call, .flod, .tablemoney, .yes').show();
-	}
 
 });
-
 $('.yes').click(function () {
-	if (raisenum1 >= raisemax) {
+	if (raisemin == raisemax) {
 		w = parseInt($('.user' + id).find("img").eq(0).attr('data'));
 		x = parseInt($('.user' + id).find("img").eq(1).attr('data'));
 		y = parseInt($('.user' + id).find("img").eq(2).attr('data'));
@@ -245,7 +220,6 @@ $('.yes').click(function () {
 });
 
 $('.check').click(function () {
-
 	var usernum = 0;
 	for (var i = 1; i < 9; i++) {
 		if (user[i]) {
@@ -274,18 +248,26 @@ $('.flod').click(function () {
 
 $('.raise').click(function () {
 	gamemoney = parseInt($(".money").html());
-	raisenum1++;
-	$(".money").html(gamemoney - 10);
-	tablemoney = tablemoney + 10;
-	$('.tablemoney').html(tablemoney);
-	websocket.send(JSON.stringify({
-		'action': "raise",
-		'name': name,
-		'userid': id,
-		'raisenum': raisenum1,
-	}));
-});
+	if (gamemoney > 0) {
+		raisenum1++;
+		$(".money").html(gamemoney - 10);
+		tablemoney = tablemoney + 10;
+		$('.tablemoney').html(tablemoney);
+		websocket.send(JSON.stringify({
+			'action': "raise",
+			'name': name,
+			'userid': id,
+			'raisenum': raisenum1,
+		}));
+	} else {
+		alert("錢不夠");
+		return false;
+	}
 
+});
+$('.call').click(function () {
+
+});
 
 $('.web').click(function () {
 	websocket.send(JSON.stringify({
@@ -312,4 +294,16 @@ $(function () {
 			$(this).val('');
 		}
 	});
+
+	$('.user' + id).sortable({
+		update: function (event, ui) {
+			w = parseInt($('.user' + id).find("img").eq(0).attr('data'));
+			x = parseInt($('.user' + id).find("img").eq(1).attr('data'));
+			y = parseInt($('.user' + id).find("img").eq(2).attr('data'));
+			z = parseInt($('.user' + id).find("img").eq(3).attr('data'));
+			changnum(w, x, y, z);
+			log('第一副點數' + a + '第二副點數' + b);
+		}
+	});
+	$("html").disableSelection();
 });

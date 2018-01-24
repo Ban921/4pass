@@ -19,6 +19,19 @@ body {
 	background-repeat: no-repeat;
 }
 
+.porker {
+	width: 100%;
+	height: 150px;
+	top: 25px;
+	left: 0px;
+	position: absolute;
+}
+
+.porkeropen {
+	width: 400px;
+	margin: 0px auto;
+}
+
 .user1 {
 	width: 200px;
 	height: 200px;
@@ -76,77 +89,6 @@ body {
 	width: 200px;
 	height: 200px;
 	top: 200px;
-	position: absolute;
-}
-
-.type1 {
-	width: 200px;
-	height: 100px;
-	left: 300px;
-	top: 200px;
-	font-size: 40px;
-	position: absolute;
-}
-
-.type2 {
-	width: 200px;
-	height: 100px;
-	left: 600px;
-	top: 200px;
-	font-size: 40px;
-	position: absolute;
-}
-
-.type3 {
-	width: 200px;
-	height: 100px;
-	left: 900px;
-	top: 200px;
-	font-size: 40px;
-	position: absolute;
-}
-
-.type4 {
-	width: 100px;
-	height: 200px;
-	top: 200px;
-	right: 0px;
-	font-size: 40px;
-	position: absolute;
-}
-
-.type5 {
-	width: 200px;
-	height: 100px;
-	left: 900px;
-	top: 400px;
-	font-size: 40px;
-	position: absolute;
-}
-
-.type6 {
-	width: 200px;
-	height: 100px;
-	left: 600px;
-	top: 400px;
-	font-size: 40px;
-	position: absolute;
-}
-
-.type7 {
-	width: 200px;
-	height: 100px;
-	left: 300px;
-	top: 400px;
-	font-size: 40px;
-	position: absolute;
-}
-
-.type8 {
-	width: 100px;
-	height: 200px;
-	top: 200px;
-	font-size: 40px;
 	position: absolute;
 }
 
@@ -231,12 +173,12 @@ body {
 }
 
 .call {
-	width: 170px;
+	width: 100px;
 	height: 50px;
 	position: absolute;
 	float: left;
 	bottom: 100px;
-	left: 350px;
+	left: 500px;
 }
 
 .flod {
@@ -245,7 +187,7 @@ body {
 	position: absolute;
 	float: left;
 	bottom: 100px;
-	left: 550px;
+	left: 630px;
 }
 
 .yes {
@@ -254,7 +196,7 @@ body {
 	position: absolute;
 	float: left;
 	bottom: 100px;
-	left: 690px;
+	left: 760px;
 }
 
 img {
