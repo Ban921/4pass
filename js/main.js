@@ -186,6 +186,17 @@ $('.gitporker').click(function () {
 		$('.raise , .flod, .tablemoney, .yes').show();
 	}
 	$('.start').hide();
+	$('.user' + id).sortable({
+		update: function (event, ui) {
+			w = parseInt($('.user' + id).find("img").eq(0).attr('data'));
+			x = parseInt($('.user' + id).find("img").eq(1).attr('data'));
+			y = parseInt($('.user' + id).find("img").eq(2).attr('data'));
+			z = parseInt($('.user' + id).find("img").eq(3).attr('data'));
+			changnum(w, x, y, z);
+			log('第一副點數' + a + '第二副點數' + b);
+
+		}
+	});
 
 });
 $('.yes').click(function () {
@@ -213,7 +224,7 @@ $('.yes').click(function () {
 			alert("前墩不能大於後墩");
 		}
 	} else {
-		alert("加碼不夠");
+		alert("請等大家下注完畢");
 	}
 
 
@@ -226,7 +237,7 @@ $('.check').click(function () {
 			if (i != id) {
 				usernum++
 			}
-		};
+		}
 	}
 
 	tablemoney = parseInt($(".tablemoney").html());
@@ -258,6 +269,7 @@ $('.raise').click(function () {
 			'name': name,
 			'userid': id,
 			'raisenum': raisenum1,
+			'num': 1,
 		}));
 	} else {
 		alert("錢不夠");
@@ -266,7 +278,22 @@ $('.raise').click(function () {
 
 });
 $('.call').click(function () {
-
+	gamemoney = parseInt($(".money").html());
+	if (gamemoney >= 10 * raisemax) {
+		raisenum = raisemax;
+		raisenum1 = raisemax;
+		$(".money").html(gamemoney - 10 * raisemax);
+		websocket.send(JSON.stringify({
+			'action': "raise",
+			'name': name,
+			'userid': id,
+			'raisenum': raisenum,
+			'num': raisemax,
+		}));
+	} else {
+		alert("錢不夠");
+		return false;
+	}
 });
 
 $('.web').click(function () {
@@ -294,16 +321,8 @@ $(function () {
 			$(this).val('');
 		}
 	});
-
-	$('.user' + id).sortable({
-		update: function (event, ui) {
-			w = parseInt($('.user' + id).find("img").eq(0).attr('data'));
-			x = parseInt($('.user' + id).find("img").eq(1).attr('data'));
-			y = parseInt($('.user' + id).find("img").eq(2).attr('data'));
-			z = parseInt($('.user' + id).find("img").eq(3).attr('data'));
-			changnum(w, x, y, z);
-			log('第一副點數' + a + '第二副點數' + b);
-		}
-	});
-	$("html").disableSelection();
 });
+
+if (!name) {
+	var name = prompt("請輸入遊戲名稱");
+}

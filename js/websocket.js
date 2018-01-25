@@ -7,8 +7,8 @@ var raisemin = '';
 var user = new Array();
 
 websocket.onopen = function (e) {
-	log("連線成功");
 	$('.web').click();
+	log("連線成功");
 };
 websocket.onmessage = function (e) {
 	if (isJSON(e.data)) {
@@ -17,6 +17,7 @@ websocket.onmessage = function (e) {
 		switch (data.action) {
 			case "index_id":
 				id = data.id;
+
 				break;
 			case "ready":
 				log("收到服务端的消息：" + data.name + "已準備");
@@ -29,9 +30,9 @@ websocket.onmessage = function (e) {
 				break;
 			case "start":
 				raisenum = '';
-				raisemax = '';
-				raisemin = '';
-				raisenum1 = '';
+				raisemax = 0;
+				raisemin = 0;
+				raisenum1 = 0;
 				if (data.userid) {
 					user[data.userid] = false;
 					$('.user' + data.userid).empty();
@@ -85,7 +86,6 @@ websocket.onmessage = function (e) {
 					log('賺了' + data.money);
 				}
 				if (data.lost) {
-					console.log(data.name1);
 					for (var i = 0; i < data.lost.length; i++) {
 						user[data.lost[i]] = false;
 						$('.user' + data.lost[i]).empty();
