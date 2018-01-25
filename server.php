@@ -22,6 +22,7 @@ function connection($connection)
 {
     global $global_uid, $global;
     // 为这个连接分配一个uid
+    ++$global;
     $connection->uid = array_shift($global_uid);
     $message = json_encode(array('id' => $connection->uid, 'action' => 'index_id'));
     sendMessageByUid($connection->uid, $message);
