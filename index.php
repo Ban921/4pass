@@ -1,25 +1,3 @@
-<!--
-                  _oo0oo_
-                 o8888888o
-                 88" . "88
-                 (| -_- |)
-                 0\  =  /0
-               ___/`---'\___
-             .' \\|     |// '.
-            / \\|||  :  |||// \
-           / _||||| -:- |||||- \
-          |   | \\\  -  /// |   |
-          | \_|  ''\---/''  |_/ |
-          \  .-\__  '-'  ___/-. /
-        ___'. .'  /--.--\  `. .'___
-     ."" '<  `.___\_<|>_/___.' >' "".
-    | | :  `- \`.;`\ _ /`;.`/ - ` : | |
-    \  \ `_.   \_ __\ /__ _/   .-` /  /
-=====`-.____`.___ \_____/___.-`___.-'=====
-                  `=---='
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-          佛祖保佑         永无BUG
--->
 <html>
 <head>
 
@@ -27,11 +5,16 @@
 	<title>四支刀</title>
 	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
   
-<script
-  src="https://code.jquery.com/jquery-3.2.1.js"
-  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+	<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+	<script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+  crossorigin="anonymous"></script>
+	
 <script src="js/websocket.js?version=<?php echo rand()?>"></script>
 </head>
 
