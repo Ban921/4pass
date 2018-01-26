@@ -10,7 +10,6 @@ $raisenum = [];
 $tablemoney = 0;
 $yesnum = 0;
 $gameing = 0;
-
 $time = 20;
 
 for ($i = 1; $i <= 52; $i++) {
@@ -30,6 +29,7 @@ function connection($connection)
     $data = "有玩家進入遊戲廳";
     broadcast($data);
 }
+
 
 // 当客户端发送消息过来时，转发给所有人
 function message($connection, $data)
@@ -77,86 +77,71 @@ function message($connection, $data)
             $tablemoney = $tablemoney + 10 * $data->num;
             $data->action = "raise";
             $data->raisenum = $raisenum;
-            $data->raisenum1 = $raisenum;
+            $data->raisemax = max($raisenum);
+            $data->raisemin = min($raisenum);
+            break;
+        case 'flod':
+            $online = array_diff($online, [$data->userid]);
+
+            foreach ($raisenum as $key => $value) {
+                if ($value == $data->userid) {
+                    unset($raisenum[$key]);
+                }
+            }
+            $data->raisenum = $raisenum;
             $data->raisemax = max($raisenum);
             $data->raisemin = min($raisenum);
 
-            break;
-        case 'flod':
-            foreach ($online as $key => $value) {
-                if ($value == $data->userid) {
-                    unset($online[$key]);
-                }
-            }
             $online = array_values($online);
+
             $data->money = 0;
-			$data->action = "flod";
-			
-			if (count($online) == $yesnum) {
-
-                $data->action = "check";
-                $data->poker = $poker;
-
-                porkcom($upnum, $downunm);
-                if (count($win) == 1) {
-                    $data->id = $win[0];
-                    $data->money = $tablemoney;
-                    $tablemoney = 0;
-                    $gameing = 0;
-                    $data->msg = $name[$win[0]] . "贏了";
-                } else {
-                    $gameing = 1;
-                    $data->lost = $lost;
-
-                    foreach ($lost as $key => $value) {
-                        $online = array_diff($online, [$value]);
-                        $online = array_values($online);
-                    }
-                }
-                usleep(4000);
-                $online = array_values($online);
-            }
+            $data->action = "flod";
             break;
 
         case 'yes':
-            $yesnum++;
             $pokered[0 + $data->userid * 4] = $data->w;
             $pokered[1 + $data->userid * 4] = $data->x;
             $pokered[2 + $data->userid * 4] = $data->y;
             $pokered[3 + $data->userid * 4] = $data->z;
-
             if (in_array($data->userid, $online)) {
                 $upnum[$data->userid] = $data->upnum;
                 $downunm[$data->userid] = $data->downunm;
             }
-
             $data->pokered = $pokered;
-            if (count($online) == $yesnum) {
-
-                $data->action = "check";
-                $data->poker = $poker;
-
-                porkcom($upnum, $downunm);
-                if (count($win) == 1) {
-                    $data->id = $win[0];
-                    $data->money = $tablemoney;
-                    $tablemoney = 0;
-                    $gameing = 0;
-                    $data->msg = $name[$win[0]] . "贏了";
-                } else {
-                    $gameing = 1;
-                    $data->lost = $lost;
-
-                    foreach ($lost as $key => $value) {
-                        $online = array_diff($online, [$value]);
-                        $online = array_values($online);
-                    }
-                }
-                usleep(4000);
-                $online = array_values($online);
-            }
-
             break;
+    }
+    if ($data->action == 'flod' || $data->action == 'yes') {
+        if ($data->action == 'yes') {
+            $yesnum++;
+        }
+        print_r(count($online));
+        echo PHP_EOL;
+        print_r($yesnum);
+        if (count($online) == $yesnum || $yesnum == count($online)) {
+
+            $data->action = "check";
+            $data->poker = $poker;
+
+            porkcom($upnum, $downunm);
+            if (count($win) == 1) {
+                $data->id = $win[0];
+                $data->money = $tablemoney;
+                $tablemoney = 0;
+                $gameing = 0;
+                $data->msg = $name[$win[0]] . "贏了";
+            } else {
+                $gameing = 1;
+                $data->lost = $lost;
+
+                foreach ($lost as $key => $value) {
+                    $online = array_diff($online, [$value]);
+                    $online = array_values($online);
+                }
+            }
+            usleep(4000);
+            $online = array_values($online);
+        }
+
     }
     $data->name1 = $name;
     $data->gameing = $gameing;
@@ -164,6 +149,7 @@ function message($connection, $data)
     $data->online = $online;
     $data->onlinegame = $onlinegame;
     $data->tablemoney = $tablemoney;
+
     $data = json_encode($data);
     broadcast($data);
 }
@@ -211,8 +197,12 @@ function sendMessageByUid($uid, $message)
 function porkcom($upnum, $downunm)
 {
     global $win, $lost;
-    $win = '';
-    $lost = '';
+    $win = [];
+    $lost = [];
+    $winup = [];
+    $windown = [];
+    $lostup = [];
+    $lostdown = [];
     foreach ($upnum as $key => $value) {
         if ($value == max($upnum)) {
             $winup[] = $key;
@@ -228,13 +218,17 @@ function porkcom($upnum, $downunm)
         }
     }
 
-    $win = array_intersect($winup, $windown);
-    $win = array_values($win);
+    
+        $win = array_intersect((array)$winup, (array)$windown);
+        $win = is_array($win)? array_values($win): array();
+ 
 
-    $lost = array_intersect($lostup, $lostdown);
-    $lost = array_values($lost);
+        
+        $lost = array_intersect((array)$lostup, (array)$lostdown);
+        $lost = is_array($lost)? array_values($lost): array();
+    
+
 }
-echo PHP_EOL;
 
 // 创建一个文本协议的Worker监听9300接口
 $worker = new Worker("websocket://192.168.106.138:9300");
