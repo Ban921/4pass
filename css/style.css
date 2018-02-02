@@ -1,95 +1,121 @@
 body {
-	cursor: pointer;
-	overflow: hidden;
-	background-image: url('../img/diceGameBg.png');
-	background-size: cover;
-	background-repeat: no-repeat;
+    cursor: pointer;
+    overflow: hidden;
+    background-image: url('../img/diceGameBg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .gametable {
-	width: 1430px;
-	height: 630px;
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	top: 0;
-	margin: auto;
-	background-image: url(../img/desktop.png);
-	background-repeat: no-repeat;
+    width: 1430px;
+    height: 630px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+    background-image: url(../img/desktop.png);
+    background-repeat: no-repeat;
 }
 
 .porker {
-	width: 100%;
-	height: 150px;
-	top: 25px;
-	left: 0px;
-	position: absolute;
+    width: 100%;
+    height: 150px;
+    top: 25px;
+    left: 0px;
+    position: absolute;
 }
 
 .porkeropen {
-	width: 400px;
-	margin: 0px auto;
+    width: 400px;
+    margin: 0px auto;
 }
 
 .user1 {
-	width: 200px;
-	height: 200px;
-	left: 300px;
-	position: absolute;
+    width: 204px;
+    height: 204px;
+    left: 300px;
+    position: absolute;
 }
 
 .user2 {
-	width: 200px;
-	height: 200px;
-	left: 600px;
-	position: absolute;
+    width: 204px;
+    height: 204px;
+    left: 600px;
+    position: absolute;
 }
 
 .user3 {
-	width: 200px;
-	height: 200px;
-	left: 900px;
-	position: absolute;
+    width: 204px;
+    height: 204px;
+    left: 900px;
+    position: absolute;
 }
 
 .user4 {
-	width: 200px;
-	height: 200px;
-	top: 200px;
-	right: 0px;
-	position: absolute;
+    width: 204px;
+    height: 204px;
+    top: 200px;
+    right: 0px;
+    position: absolute;
 }
 
 .user5 {
-	width: 200px;
-	height: 200px;
-	left: 900px;
-	top: 400px;
-	position: absolute;
+    width: 204px;
+    height: 204px;
+    left: 900px;
+    top: 400px;
+    position: absolute;
 }
 
 .user6 {
-	width: 200px;
-	height: 200px;
-	left: 600px;
-	top: 400px;
-	position: absolute;
+    width: 204px;
+    height: 204px;
+    left: 600px;
+    top: 400px;
+    position: absolute;
 }
 
 .user7 {
-	width: 200px;
-	height: 200px;
-	left: 300px;
-	top: 400px;
-	position: absolute;
+    width: 204px;
+    height: 204px;
+    left: 300px;
+    top: 400px;
+    position: absolute;
 }
 
 .user8 {
-	width: 200px;
-	height: 200px;
-	top: 200px;
-	position: absolute;
+    width: 204px;
+    height: 204px;
+    top: 200px;
+    position: absolute;
+}
+
+div.item {
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    float: left;
+    border: 1px solid lightgray;
+    z-index: 1;
+    text-align: center;
+    font-size: 30px;
+    line-height: 100px;
+    cursor: move;
+}
+
+div.moving {
+    border: 1px dashed gray;
+}
+
+div.draging {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    box-shadow: 0 0 2px 2px #555;
+    border-radius: 5px;
+    z-index: 500;
 }
 
 .start,
@@ -97,48 +123,48 @@ body {
 .call,
 .flod,
 .yes {
-	color: rgba(255, 255, 255, 1);
-	background-color: rgba(219, 87, 5, 1);
-	font-weight: 700;
-	font-size: 3em;
-	display: block;
-	padding: 4px;
-	-webkit-border-radius: 8px;
-	-moz-border-radius: 8px;
-	border-radius: 8px;
-	-webkit-box-shadow: 0px 9px 0px rgba(219, 31, 5, 1), 0px 9px 25px rgba(0, 0, 0, .7);
-	-moz-box-shadow: 0px 9px 0px rgba(219, 31, 5, 1), 0px 9px 25px rgba(0, 0, 0, .7);
-	box-shadow: 0px 9px 0px rgba(219, 31, 5, 1), 0px 9px 25px rgba(0, 0, 0, .7);
-	text-align: center;
-	-webkit-transition: all .1s ease;
-	-moz-transition: all .1s ease;
-	-ms-transition: all .1s ease;
-	-o-transition: all .1s ease;
-	transition: all .1s ease;
+    color: rgba(255, 255, 255, 1);
+    background-color: rgba(219, 87, 5, 1);
+    font-weight: 700;
+    font-size: 3em;
+    display: block;
+    padding: 4px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0px 9px 0px rgba(219, 31, 5, 1), 0px 9px 25px rgba(0, 0, 0, .7);
+    -moz-box-shadow: 0px 9px 0px rgba(219, 31, 5, 1), 0px 9px 25px rgba(0, 0, 0, .7);
+    box-shadow: 0px 9px 0px rgba(219, 31, 5, 1), 0px 9px 25px rgba(0, 0, 0, .7);
+    text-align: center;
+    -webkit-transition: all .1s ease;
+    -moz-transition: all .1s ease;
+    -ms-transition: all .1s ease;
+    -o-transition: all .1s ease;
+    transition: all .1s ease;
 }
 
 .start:active,
 .check:active {
-	-webkit-box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px rgba(0, 0, 0, .9);
-	-moz-box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px rgba(0, 0, 0, .9);
-	box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px rgba(0, 0, 0, .9);
-	position: relative;
+    -webkit-box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px rgba(0, 0, 0, .9);
+    -moz-box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px rgba(0, 0, 0, .9);
+    box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px rgba(0, 0, 0, .9);
+    position: relative;
 }
 
 .start {
-	width: 100px;
-	height: 50px;
-	position: absolute;
-	top: 275px;
-	left: 660px;
-	float: left;
-	z-index: 11;
-	display: none;
+    width: 100px;
+    height: 50px;
+    position: absolute;
+    top: 275px;
+    left: 660px;
+    float: left;
+    z-index: 11;
+    display: none;
 }
 
 .start:active {
-	top: 275px;
-	left: 660px;
+    top: 275px;
+    left: 660px;
 }
 
 
@@ -160,111 +186,107 @@ body {
 .call,
 .flod,
 .yes {
-	margin-left: 10px;
-	display: none;
+    margin-left: 10px;
+    display: none;
 }
 
 .raise {
-	width: 100px;
-	height: 50px;
-	position: absolute;
-	bottom: 100px;
-	left: 350px;
+    width: 100px;
+    height: 50px;
+    position: absolute;
+    bottom: 100px;
+    left: 350px;
 }
 
 .call {
-	width: 100px;
-	height: 50px;
-	position: absolute;
-	float: left;
-	bottom: 100px;
-	left: 500px;
+    width: 100px;
+    height: 50px;
+    position: absolute;
+    float: left;
+    bottom: 100px;
+    left: 500px;
 }
 
 .flod {
-	width: 100px;
-	height: 50px;
-	position: absolute;
-	float: left;
-	bottom: 100px;
-	left: 630px;
+    width: 100px;
+    height: 50px;
+    position: absolute;
+    float: left;
+    bottom: 100px;
+    left: 630px;
 }
 
 .yes {
-	width: 100px;
-	height: 50px;
-	position: absolute;
-	float: left;
-	bottom: 100px;
-	left: 760px;
+    width: 100px;
+    height: 50px;
+    position: absolute;
+    float: left;
+    bottom: 100px;
+    left: 760px;
 }
 
 img {
-	height: 100px;
-	width: 100px;
-	background-color: #BEBEBE;
-}
-
-img:hover {
-	top: 10px;
+    height: 100px;
+    width: 100px;
+    background-color: #BEBEBE;
 }
 
 .money {
-	width: 250px;
-	height: 105px;
-	background-image: url(../img/money.png);
-	background-repeat: no-repeat;
-	float: right;
-	font-size: 100px;
-	text-align: center;
+    width: 250px;
+    height: 105px;
+    background-image: url(../img/money.png);
+    background-repeat: no-repeat;
+    float: right;
+    font-size: 100px;
+    text-align: center;
 }
 
 #body {
-	width: 100px;
-	position: absolute;
-	bottom: 20px;
-	right: 0;
+    width: 100px;
+    position: absolute;
+    bottom: 20px;
+    right: 0;
 }
 
 #log {
-	max-width: 400px;
-	max-height: 100px;
-	min-width: 400px;
-	min-height: 100px;
-	width: 400px;
-	height: 100px;
-	position: absolute;
-	bottom: 20px;
-	right: 0;
+    max-width: 400px;
+    max-height: 100px;
+    min-width: 400px;
+    min-height: 100px;
+    width: 400px;
+    height: 100px;
+    position: absolute;
+    bottom: 20px;
+    right: 0;
 }
 
 #message {
-	width: 400px;
-	position: absolute;
-	bottom: 0;
-	right: 0;
+    width: 400px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
 .tablemoney {
-	width: 150px;
-	height: 75px;
-	position: absolute;
-	top: 250px;
-	left: 630px;
-	float: left;
-	z-index: 10;
-	display: none;
-	font-size: 100px;
+    width: 150px;
+    height: 75px;
+    position: absolute;
+    top: 250px;
+    left: 630px;
+    float: left;
+    z-index: 10;
+    display: none;
+    font-size: 100px;
 }
 
 .online {
-	width: 250px;
-	height: 400px;
-	background-color: black;
-	position: absolute;
-	left: 0px;
-	top: 0px;
-	z-index: 0;
-	opacity: 0.5;
-	color: aliceblue;
+    width: 250px;
+    height: 400px;
+    background-color: black;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 0;
+    opacity: 0.5;
+    color: aliceblue;
 }

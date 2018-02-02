@@ -186,18 +186,20 @@ $('.gitporker').click(function() {
         $('.raise , .flod, .tablemoney, .yes').show();
     }
     $('.start').hide();
-    $('.user' + id).sortable({
-        update: function(event, ui) {
-            w = parseInt($('.user' + id).find("img").eq(0).attr('data'));
-            x = parseInt($('.user' + id).find("img").eq(1).attr('data'));
-            y = parseInt($('.user' + id).find("img").eq(2).attr('data'));
-            z = parseInt($('.user' + id).find("img").eq(3).attr('data'));
-            changnum(w, x, y, z);
-            log('第一副點數' + a + '第二副點數' + b);
 
-        }
-    });
 
+
+    // $('.user' + id).sortable({
+    //     update: function(event, ui) {
+    //         w = parseInt($('.user' + id).find("img").eq(0).attr('data'));
+    //         x = parseInt($('.user' + id).find("img").eq(1).attr('data'));
+    //         y = parseInt($('.user' + id).find("img").eq(2).attr('data'));
+    //         z = parseInt($('.user' + id).find("img").eq(3).attr('data'));
+    //         changnum(w, x, y, z);
+    //         log('第一副點數' + a + '第二副點數' + b);
+
+    //     }
+    // });
 });
 $('.yes').click(function() {
     if (raisenum1 == raisemax) {
@@ -322,5 +324,5 @@ $(function() {
 });
 
 while (!name) {
-    var name = prompt("請輸入遊戲名稱");
+    var name = prompt("請輸入玩家名稱");
 }

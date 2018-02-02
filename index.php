@@ -3,6 +3,7 @@
 
 	<meta charset="UTF-8">
 	<title>四支刀</title>
+ 
 	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
   
 	<script
@@ -10,12 +11,13 @@
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
 
-	<script
+	<!-- <script
   src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
   integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-  crossorigin="anonymous"></script>
-	
+  crossorigin="anonymous"></script> -->
+
 <script src="js/websocket.js?version=<?php echo rand()?>"></script>
+
 </head>
 
 <body>
@@ -50,5 +52,7 @@
 		<textarea id='log' name='log' readonly='readonly'></textarea><br/>
 		<input type='text' id='message' name='message' />
 	</div>
+
+	
 </body>
 </html>

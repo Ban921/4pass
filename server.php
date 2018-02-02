@@ -16,6 +16,17 @@ for ($i = 1; $i <= 52; $i++) {
     $poker[$i] = $i;
 }
 
+class test{
+    public function __construct()
+    {
+        echo "123";
+    }
+    public function newgeme(Type $var = null)
+    {
+        # code...
+    }
+}
+
 // 当客户端连上来时分配uid，并保存连接，并通知所有客户端
 function connection($connection)
 {
@@ -25,7 +36,7 @@ function connection($connection)
     $connection->uid = array_shift($global_uid);
     $message = json_encode(array('id' => $connection->uid, 'action' => 'index_id'));
     sendMessageByUid($connection->uid, $message);
-
+    
     $data = "有玩家進入遊戲廳";
     broadcast($data);
 }
@@ -34,6 +45,7 @@ function connection($connection)
 // 当客户端发送消息过来时，转发给所有人
 function message($connection, $data)
 {
+    new test();
     global $online, $onlinegame, $poker, $tablemoney, $yesnum, $pokered, $gameing, $upnum, $downunm, $name, $raisenum, $win, $lost;
 
     $data = json_decode($data);
@@ -56,6 +68,7 @@ function message($connection, $data)
             }
             if (count($onlinegame) == 1) {
                 $data->action = "quit";
+                $data->msg = "抱歉遊戲裡只有你一個人";
             } else {
                 shuffle($poker);
                 $data->poker = $poker;
@@ -109,14 +122,14 @@ function message($connection, $data)
             }
             $data->pokered = $pokered;
             break;
+
+        case 'buy';
+            break;
     }
     if ($data->action == 'flod' || $data->action == 'yes') {
         if ($data->action == 'yes') {
             $yesnum++;
         }
-        print_r(count($online));
-        echo PHP_EOL;
-        print_r($yesnum);
         if (count($online) == $yesnum || $yesnum == count($online)) {
 
             $data->action = "check";
@@ -154,6 +167,7 @@ function message($connection, $data)
     broadcast($data);
 }
 
+
 // 当客户端断开时，广播给所有客户端
 function close($connection)
 {
@@ -173,6 +187,7 @@ function close($connection)
     $online = array_values($online);
     $onlinegame = array_values($onlinegame);
     array_push($global_uid, $connection->uid);
+
 }
 
 // 向所有验证的用户推送数据
@@ -218,16 +233,11 @@ function porkcom($upnum, $downunm)
         }
     }
 
-    
-        $win = array_intersect((array)$winup, (array)$windown);
-        $win = is_array($win)? array_values($win): array();
+    $win = array_intersect((array)$winup, (array)$windown);
+    $win = is_array($win)? array_values($win): array();
  
-
-        
-        $lost = array_intersect((array)$lostup, (array)$lostdown);
-        $lost = is_array($lost)? array_values($lost): array();
-    
-
+    $lost = array_intersect((array)$lostup, (array)$lostdown);
+    $lost = is_array($lost)? array_values($lost): array();
 }
 
 // 创建一个文本协议的Worker监听9300接口

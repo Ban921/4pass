@@ -34,8 +34,10 @@ websocket.onmessage = function(e) {
                 raisemin = 0;
                 raisenum1 = 0;
 
+
                 for (var i = 0; i <= data.online.length; i++) {
                     user[data.online[i]] = true;
+                    raisenum[i] = 0;
                 }
                 $('.gitporker').click();
 
@@ -45,10 +47,8 @@ websocket.onmessage = function(e) {
                         $('.user' + i).css("border-style", "dashed");
                         $('.user' + i).css("border-color", "black");
                         $('.user' + i).html('<img src="img/Red_Back.svg" />' + '<img src="img/Red_Back.svg" />' + '<img src="img/Red_Back.svg" />' + '<img src="img/Red_Back.svg" />');
-
                         if (i == id) {
-                            $('.user' + id).html('<img data="' + poker[0 + (i * 4)] + '" src="img/' + poker[0 + (i * 4)] + '.svg" />' + '<img data="' + poker[1 + (i * 4)] + '" src="img/' + poker[1 + (i * 4)] + '.svg" />' + '<img data="' + poker[2 + (i * 4)] + '" src="img/' + poker[2 + (i * 4)] + '.svg" />' + '<img data="' + poker[3 + (i * 4)] + '" src="img/' + poker[3 + (i * 4)] + '.svg" />');
-                            $('.porkeropen').html('<img data="' + poker[0 + (i * 4)] + '" src="img/' + poker[0 + (i * 4)] + '.svg" />' + '<img data="' + poker[1 + (i * 4)] + '" src="img/' + poker[1 + (i * 4)] + '.svg" />' + '<img data="' + poker[2 + (i * 4)] + '" src="img/' + poker[2 + (i * 4)] + '.svg" />' + '<img data="' + poker[3 + (i * 4)] + '" src="img/' + poker[3 + (i * 4)] + '.svg" />');
+                            $('.user' + id).html('<div class="item"><img data="' + poker[0 + (i * 4)] + '" src="img/' + poker[0 + (i * 4)] + '.svg" /></div>' + '<div class="item"><img data="' + poker[1 + (i * 4)] + '" src="img/' + poker[1 + (i * 4)] + '.svg" /></div>' + '<div class="item"><img data="' + poker[2 + (i * 4)] + '" src="img/' + poker[2 + (i * 4)] + '.svg" /></div>' + '<div class="item"><img data="' + poker[3 + (i * 4)] + '" src="img/' + poker[3 + (i * 4)] + '.svg" /></div>');
                         }
                     } else {
                         $('.user' + i).empty();
@@ -56,6 +56,8 @@ websocket.onmessage = function(e) {
                     }
                 }
                 $('.online').html('');
+
+                drop(id);
 
                 break;
             case "check":
@@ -181,4 +183,70 @@ function isJSON(str) {
             return false;
         }
     }
+}
+
+function drop(id) {
+    var bstop = true;
+    $('.user' + id + ' div').on('mousedown', function(e) {
+        if (bstop) {
+            bstop = false;
+            var that = this;
+            var disx = e.offsetX; //获取的拖拽过程的短线的长度（鼠标的位置离盒子边缘的位置）
+            var disy = e.offsetY;
+            var clone = $(this).clone(); //克隆
+            clone.addClass('draging').css({ //对克隆的盒子设置类名以及位置
+                left: $(this).position().left,
+                top: $(this).position().top
+            });
+            $('.user' + id).append(clone); //追加到user里面
+            $(this).addClass('moving').html(''); //被克隆的元素添加类移除内容
+            $('.user' + id).on('mousemove', function(e) { //对克隆的盒子进行拖拽
+                clone.css({
+                    left: e.pageX - $(this).offset().left - disx,
+                    top: e.pageY - $(this).offset().top - disy
+                })
+
+            });
+
+            clone.on('mouseup', function() {
+                $('.user' + id).off('mousemove'); //取消mousemove事件
+                var minIndex = $(that).index(); //最小索引赋初始值
+                var minValue = 1000; //初始化最小值，用来存储所有盒子的最小值
+                $('.user' + id + ' div').not(':last').each(function() { //不包括克隆的那个盒子
+                    var smalldistance = Math.sqrt(Math.pow(clone.position().left - $(this).position().left, 2) + Math.pow(clone.position().top - $(this).position().top, 2)); //利用勾股定理获取每一个盒子离克隆出来的盒子的距离
+                    if (smalldistance < minValue) { //比较
+                        minValue = smalldistance; //获取最小值
+                        minIndex = $(this).index(); //获取最小值对应的索引
+                    }
+                });
+                if (minIndex == $(that).index()) { //如果当前最小距离的那个盒子和拖拽的盒子索引相等的话，归位。
+                    clone.animate($(that).position(), 400, function() {
+                        $(that).removeClass('moving').html(clone.html()); //恢复被克隆盒子的相关样式
+                        $(this).remove(); //移除被克隆的盒子
+                        bstop = true;
+                    });
+                } else {
+                    var $minbox = $('.user' + id + ' div').eq(minIndex); //最小索引的盒子
+                    var clone2 = $minbox.clone(); //克隆一个最小盒子的副本，添加相关样式
+                    clone2.addClass('draging').css({
+                        left: $minbox.position().left,
+                        top: $minbox.position().top
+                    })
+                    $('.user' + id).append(clone2); //追加
+                    $minbox.addClass('moving').html('');
+                    clone.animate($minbox.position(), 400, function() { //克隆的内容运动到最小索引的盒子的位置
+                        $minbox.removeClass('moving').html(clone.html()); //移除相关样式，添加内容
+                        clone.remove(); //移除克隆的盒子
+                        bstop = true;
+                    });
+                    clone2.animate($(that).position(), 400, function() {
+                        $(that).removeClass('moving').html(clone2.html());
+                        clone2.remove();
+                        bstop = true;
+                    });
+                }
+            });
+        }
+        return false;
+    });
 }
